@@ -299,7 +299,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: DashFoward
+      name: DashForward
       takeName: Dodge_Forward
       internalID: -3851722262833059593
       firstFrame: 0

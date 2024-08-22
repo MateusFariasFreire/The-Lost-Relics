@@ -15,7 +15,10 @@ public class PlayerController : MonoBehaviour
         Interacting,
         Dashing,
         Defending,
-        Attacking
+        Attacking1,
+        Attacking2,
+        Attacking3,
+        Attacking4
     }
 
     public enum MovementDirection
@@ -44,9 +47,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackCooldown3 = 4f;
     [SerializeField] private float attackCooldown4 = 5f;
 
-    [SerializeField] private PlayerState currentState = PlayerState.Idle;
-    [SerializeField] private MovementDirection currentDirection = MovementDirection.None;
-    [SerializeField] private MovementDirection relativeMovementDirection = MovementDirection.None;
+    [Header("Dash Effect")]
+    [SerializeField] private MeshTrail dashMeshTrail;
+
+    private PlayerState currentState = PlayerState.Idle;
+    private MovementDirection currentDirection = MovementDirection.None;
+    private MovementDirection relativeMovementDirection = MovementDirection.None;
 
     private Vector2 inputDirection;
     private bool isRunning;
@@ -61,11 +67,15 @@ public class PlayerController : MonoBehaviour
     private float attackCooldownEndTime2 = 0f;
     private float attackCooldownEndTime3 = 0f;
     private float attackCooldownEndTime4 = 0f;
-    private float dashEndTime = 0f; // Ajouté pour suivre la fin du dash
+
+    Animator playerAnimator;
+    private PlayerAttacks playerAttacksManager;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerAnimator = GetComponent<Animator>();
+        playerAttacksManager = GetComponent<PlayerAttacks>();
         mainCamera = Camera.main;
     }
 
@@ -148,11 +158,11 @@ public class PlayerController : MonoBehaviour
         {
             isDefending = true;
             currentState = PlayerState.Defending;
+            playerAnimator.Play("Block");
         }
         else if (value.phase == InputActionPhase.Canceled)
         {
             isDefending = false;
-            currentState = PlayerState.Idle;
         }
     }
 
@@ -196,7 +206,6 @@ public class PlayerController : MonoBehaviour
         }
 
         isAttacking = true;
-        currentState = PlayerState.Attacking;
 
         // Définir la durée de l'attaque et la fin du cooldown en fonction du type d'attaque
         float attackDuration = 0f;
@@ -205,18 +214,35 @@ public class PlayerController : MonoBehaviour
         switch (attackType)
         {
             case 1:
+                currentState = PlayerState.Attacking1;
+                playerAnimator.CrossFade("Attack1", 0f);
+                playerAttacksManager.CastAttack1();
                 attackDuration = attackDuration1;
                 attackCooldown = attackCooldown1;
+
                 break;
             case 2:
-                attackDuration = attackDuration2;
-                attackCooldown = attackCooldown2;
+                { 
+                    currentState = PlayerState.Attacking2;
+                    playerAnimator.CrossFade("Attack2", 0f);
+                    Vector3 mouseWorldPos = GetMouseWorldPos();
+                    if (mouseWorldPos != new Vector3())
+                    {
+                        playerAttacksManager.CastAttack2(mouseWorldPos);
+                        attackDuration = attackDuration2;
+                        attackCooldown = attackCooldown2;
+                    }
+                }
                 break;
             case 3:
+                currentState = PlayerState.Attacking3;
+                playerAnimator.CrossFade("Attack3", 0f);
                 attackDuration = attackDuration3;
                 attackCooldown = attackCooldown3;
                 break;
             case 4:
+                currentState = PlayerState.Attacking4;
+                playerAnimator.CrossFade("Attack4", 0f);
                 attackDuration = attackDuration4;
                 attackCooldown = attackCooldown4;
                 break;
@@ -229,7 +255,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackDuration);
 
         isAttacking = false;
-        currentState = PlayerState.Idle;
 
         // Mettre à jour le temps de cooldown pour l'attaque effectuée
         switch (attackType)
@@ -260,8 +285,37 @@ public class PlayerController : MonoBehaviour
         currentState = PlayerState.Dashing;
 
         Vector3 dashDirection = GetMovementDirection();
+
+        if (dashDirection == Vector3.zero) 
+        {
+            dashDirection = transform.forward.normalized;
+        }
+
         float dashStartTime = Time.time;
         float dashEndTime = dashStartTime + dashDuration; // Définir la fin du dash en utilisant dashDuration
+
+        MovementDirection dashDirectionRelative = DetermineRelativeMovementDirection(dashDirection);
+
+        switch (dashDirectionRelative)
+        {
+            case MovementDirection.Forward:
+                playerAnimator.CrossFade("DashForward",0f);
+                break;
+            case MovementDirection.Backward:
+                isDashing = false;
+                yield break;
+            case MovementDirection.Right:
+
+                playerAnimator.CrossFade("DashRight", 0f);
+                break;
+            case MovementDirection.Left:
+
+                playerAnimator.CrossFade("DashLeft", 0f);
+                break;
+
+        }
+
+        dashMeshTrail.DisplayMeshTrail(dashDuration);
 
         while (Time.time < dashEndTime)
         {
@@ -269,8 +323,8 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
+
         isDashing = false;
-        currentState = PlayerState.Idle;
         actionEndTime = Time.time + dashDuration; // Bloquer les autres actions pendant la durée du dash
     }
 
@@ -280,6 +334,7 @@ public class PlayerController : MonoBehaviour
         {
             yield break; // Si déjà en train d'interagir ou d'une autre action, ne fait rien
         }
+        playerAnimator.Play("Interact");
 
         isInteracting = true;
         currentState = PlayerState.Interacting;
@@ -289,7 +344,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(interactionDuration);
 
         isInteracting = false;
-        currentState = PlayerState.Idle;
     }
 
     private void HandleMovement()
@@ -297,17 +351,52 @@ public class PlayerController : MonoBehaviour
         if (inputDirection == Vector2.zero)
         {
             currentState = PlayerState.Idle;
+            playerAnimator.Play("Idle");
             relativeMovementDirection = MovementDirection.None; // Aucune direction
             return;
         }
 
         Vector3 moveDirection = GetMovementDirection();
-        float speed = isRunning ? runSpeed : walkSpeed;
+        relativeMovementDirection = DetermineRelativeMovementDirection(moveDirection);
+
+        float speed = isRunning && (relativeMovementDirection != MovementDirection.Backward) ? runSpeed : walkSpeed;
 
         characterController.Move(moveDirection * speed * Time.deltaTime);
         currentDirection = DetermineMovementDirection(moveDirection);
-        relativeMovementDirection = DetermineRelativeMovementDirection(moveDirection);
-        currentState = isRunning ? PlayerState.Running : PlayerState.Walking;
+        currentState = isRunning && (relativeMovementDirection != MovementDirection.Backward) ? PlayerState.Running : PlayerState.Walking;
+
+        if (currentState == PlayerState.Running)
+        {
+            switch (relativeMovementDirection)
+            {
+                case MovementDirection.Forward:
+                    playerAnimator.Play("Running");
+                    break;
+                case MovementDirection.Right:
+                    playerAnimator.Play("RunningRight");
+                    break;
+                case MovementDirection.Left:
+                    playerAnimator.Play("RunningLeft");
+                    break;
+            }
+        }
+        else if (currentState == PlayerState.Walking)
+        {
+
+            switch (relativeMovementDirection)
+            {
+                case MovementDirection.Forward:
+                case MovementDirection.Right:
+                case MovementDirection.Left:
+                    playerAnimator.Play("WalkingForward");
+                    break;
+
+                case MovementDirection.Backward:
+                    playerAnimator.Play("WalkingBackwards");
+                    break;
+
+            }
+        }
     }
 
     private Vector3 GetMovementDirection()
@@ -336,37 +425,64 @@ public class PlayerController : MonoBehaviour
 
     private MovementDirection DetermineMovementDirection(Vector3 moveDirection)
     {
-        Vector3 cameraForward = GetCameraForward();
-        Vector3 cameraRight = GetCameraRight();
 
-        // Calculer la direction relative du mouvement
-        float dotForward = Vector3.Dot(cameraForward, moveDirection);
-        float dotRight = Vector3.Dot(cameraRight, moveDirection);
 
-        if (dotForward > 0.5f && Mathf.Abs(dotRight) < 0.5f)
+        //Calculer la position relative par rapport à l'avant du personnage, la caméra ne tourne pas avec le personnage, calcule par rapport à l'input et à la caméra
+
+        if (moveDirection == Vector3.zero)
+        {
+            return MovementDirection.None;
+        }
+
+        float angle = Vector3.SignedAngle(GetCameraForward(), moveDirection, Vector3.up);
+
+        if (angle >= -45 && angle <= 45)
         {
             return MovementDirection.Forward;
         }
-        else if (dotForward < -0.5f && Mathf.Abs(dotRight) < 0.5f)
-        {
-            return MovementDirection.Backward;
-        }
-        else if (dotRight > 0.5f && Mathf.Abs(dotForward) < 0.5f)
+        else if (angle >= 45 && angle <= 135)
         {
             return MovementDirection.Right;
         }
-        else if (dotRight < -0.5f && Mathf.Abs(dotForward) < 0.5f)
+        else if (angle <= -45 && angle >= -135)
         {
             return MovementDirection.Left;
         }
+        else
+        {
+            return MovementDirection.Backward;
+        }
 
-        return MovementDirection.None;
     }
 
     private MovementDirection DetermineRelativeMovementDirection(Vector3 moveDirection)
     {
-        // Vous pouvez adapter cette méthode pour déterminer la direction relative souhaitée
-        return currentDirection;
+        //Calculer la position relative par rapport à l'avant du personnage, la caméra ne tourne pas avec le personnage, calcule par rapport à l'input et l'avant du transform
+
+        if (moveDirection == Vector3.zero)
+        {
+            return MovementDirection.None;
+        }
+
+        float angle = Vector3.SignedAngle(transform.forward, moveDirection, Vector3.up);
+
+        if (angle >= -45 && angle <= 45)
+        {
+            return MovementDirection.Forward;
+        }
+        else if (angle >= 45 && angle <= 135)
+        {
+            return MovementDirection.Right;
+        }
+        else if (angle <= -45 && angle >= -135)
+        {
+            return MovementDirection.Left;
+        }
+        else
+        {
+            return MovementDirection.Backward;
+        }
+
     }
 
     private void RotateTowardsMouse()
@@ -379,6 +495,20 @@ public class PlayerController : MonoBehaviour
             directionToMouse.y = 0; // Ignorer la composante Y pour la rotation horizontale
             Quaternion targetRotation = Quaternion.LookRotation(directionToMouse);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+        }
+    }
+
+    private Vector3 GetMouseWorldPos()
+    {
+        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return new Vector3();
         }
     }
 }

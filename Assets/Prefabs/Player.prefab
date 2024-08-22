@@ -1907,17 +1907,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   runSpeed: 10
-  dashDistance: 3
-  dashSpeed: 20
+  dashSpeed: 25
+  dashDuration: 0.3
   attackDuration1: 1
   attackDuration2: 1
   attackDuration3: 1
   attackDuration4: 1
   interactionDuration: 1.3
-  attackCooldown1: 2
-  attackCooldown2: 3
-  attackCooldown3: 4
-  attackCooldown4: 5
+  attackCooldown1: 0.2
+  attackCooldown2: 0.2
+  attackCooldown3: 0.2
+  attackCooldown4: 0.2
   currentState: 0
   currentDirection: 4
   relativeMovementDirection: 4
