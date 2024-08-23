@@ -122,7 +122,7 @@ MonoBehaviour:
   followZone: 10
   speed: 40
   lifeTime: 3
-  lerpSpeed: 10
+  lerpSpeed: 12
 --- !u!96 &5871863949123613685
 TrailRenderer:
   serializedVersion: 3
