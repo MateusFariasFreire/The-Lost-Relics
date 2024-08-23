@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.4433962, g: 0.4006949, b: 0.37019402, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.1254902, g: 0.078431375, b: 0.43529412, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.48469475, g: 1, b: 0.18396229, a: 1}
@@ -5092,7 +5092,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.4433962, g: 0.4006949, b: 0.37019402, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.1254902, g: 0.078431375, b: 0.43529412, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -10018,8 +10018,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.14332584, g: 0.3301887, b: 0, a: 1}
-      maxColor: {r: 0.3915094, g: 1, b: 0.7373464, a: 1}
+      minColor: {r: 0.1254902, g: 0.078431375, b: 0.43529412, a: 1}
+      maxColor: {r: 0.1254902, g: 0.078431375, b: 0.43529412, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -19726,7 +19726,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -21157,7 +21157,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 0.28791246, g: 0, b: 0.38679248, a: 1}
         key1: {r: 1, g: 1, b: 1, a: 1}
         key2: {r: 1, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -21182,7 +21182,7 @@ ParticleSystem:
         atime6: 33084
         atime7: 33591
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -24920,7 +24920,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.4433962, g: 0.4006949, b: 0.37019402, a: 1}
-      maxColor: {r: 0.02352941, g: 1, b: 0.8751349, a: 1}
+      maxColor: {r: 0.1254902, g: 0.078431375, b: 0.43529412, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.6915095, b: 0.48584908, a: 1}
@@ -26090,7 +26090,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 0.25787282, g: 0, b: 0.49056602, a: 1}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -26115,7 +26115,7 @@ ParticleSystem:
         atime6: 33084
         atime7: 33591
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -29670,9 +29670,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199cf32a49140264e9e4ef419e0c3765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 3.5
   duration: 1.5
   bumpForce: 10
+  fadeOutTime: 1
+  windEffect: {fileID: 7385175882132628568}
 --- !u!135 &-1408664679953029145
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -29917,7 +29919,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.4433962, g: 0.4006949, b: 0.37019402, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.1254902, g: 0.078431375, b: 0.43529412, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.6915095, b: 0.48584908, a: 1}

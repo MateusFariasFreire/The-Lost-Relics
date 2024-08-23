@@ -211,6 +211,8 @@ public class PlayerController : MonoBehaviour
                 playerAttacksManager.CastAttack1();
                 attackDuration = attackDuration1;
                 attackCooldown = attackCooldown1;
+                attackEndTime = Time.time + attackDuration;
+                yield return new WaitForSeconds(attackDuration);
 
                 break;
             case 2:
@@ -218,6 +220,7 @@ public class PlayerController : MonoBehaviour
                 playerAnimator.CrossFade("Attack2", 0.2f);
                 attackDuration = attackDuration2;
                 attackCooldown = attackCooldown2;
+                attackEndTime = Time.time + attackDuration;
 
                 yield return new WaitForSeconds(attackDuration / 2);
                 if (mouseWolrdPosOnCast != Vector3.zero)
@@ -234,22 +237,22 @@ public class PlayerController : MonoBehaviour
                 playerAnimator.CrossFade("Attack3", 0.2f);
                 attackDuration = attackDuration3;
                 attackCooldown = attackCooldown3;
+                attackEndTime = Time.time + attackDuration;
 
-                yield return new WaitForSeconds(attackDuration / 2);
+                yield return new WaitForSeconds(attackDuration / 2 - 0.4f);
                 if (mouseWolrdPosOnCast != Vector3.zero)
                 {
                     playerAttacksManager.CastAttack3();
                 }
 
-                yield return new WaitForSeconds(attackDuration / 2);
+                yield return new WaitForSeconds(attackDuration / 2 + 0.4f);
                 break;
             case 4:
                 SetCurrentState(PlayerState.Attacking4);
                 playerAnimator.CrossFade("Attack4", 0.2f);
                 attackDuration = attackDuration4;
                 attackCooldown = attackCooldown4;
-
-
+                attackEndTime = Time.time + attackDuration;
                 yield return new WaitForSeconds(attackDuration / 2);
                 if (mouseWolrdPosOnCast != Vector3.zero)
                 {
@@ -259,11 +262,11 @@ public class PlayerController : MonoBehaviour
                 yield return new WaitForSeconds(attackDuration / 2);
                 break;
             case 5:
-                SetCurrentState(PlayerState.Attacking4);
+                SetCurrentState(PlayerState.Attacking5);
                 playerAnimator.CrossFade("Attack5", 0.2f);
                 attackDuration = attackDuration5;
                 attackCooldown = attackCooldown5;
-
+                attackEndTime = Time.time + attackDuration;
                 yield return new WaitForSeconds(attackDuration / 2);
                 if (mouseWolrdPosOnCast != Vector3.zero)
                 {
@@ -274,7 +277,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        attackEndTime = Time.time + attackDuration;
+        
         actionEndTime = attackEndTime;
         isAttacking = false;
 

@@ -34,7 +34,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public void CastAttack4()
     {
-        GameObject attack3 = Instantiate(attack3Prefab, staffSpawnPoint.position, transform.rotation);
+        GameObject attack3 = Instantiate(attack4Prefab, staffSpawnPoint.position, transform.rotation);
     }
 
     public void CastAttack5()
