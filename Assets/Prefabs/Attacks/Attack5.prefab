@@ -4880,7 +4880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 5
   radius: 6
-  force: 0.5
+  force: 50
 --- !u!135 &-5589892520115267867
 SphereCollider:
   m_ObjectHideFlags: 0

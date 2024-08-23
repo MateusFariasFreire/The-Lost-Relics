@@ -185,5 +185,5 @@ MonoBehaviour:
   target: {fileID: 0}
   offset: {x: 0, y: 18, z: -18}
   smoothSpeed: 0.125
-  lookAheadDistance: 5
+  lookAheadDistance: 7
   directionSmoothTime: 1.8

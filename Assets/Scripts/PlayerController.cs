@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
         Running,
         Interacting,
         Dashing,
+        Charging,
         Attacking1,
         Attacking2,
         Attacking3,
@@ -61,7 +62,9 @@ public class PlayerController : MonoBehaviour
     private bool isRunning;
     private bool isDashing;
     private bool isInteracting;
-    private bool isAttacking;
+    private bool isAttacking; 
+    private bool isCharging;
+    private int currentChargingAttackType;
 
     private float actionEndTime = 0f;
     private float attackEndTime = 0f;
@@ -151,56 +154,89 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack1(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed && Time.time > attackCooldownEndTime1)
+        if (value.phase == InputActionPhase.Performed)
         {
             StartCoroutine(PerformAttack(1));
         }
     }
 
+
     public void OnAttack2(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed && Time.time > attackCooldownEndTime2)
+        if (value.phase == InputActionPhase.Performed)
         {
-            StartCoroutine(PerformAttack(2));
+            StartCharging(2);
+        }
+        else if (value.phase == InputActionPhase.Canceled)
+        {
+            StopChargingAndAttack(2);
         }
     }
 
     public void OnAttack3(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed && Time.time > attackCooldownEndTime3)
+        if (value.phase == InputActionPhase.Performed)
         {
-            StartCoroutine(PerformAttack(3));
+            StartCharging(3);
+        }
+        else if (value.phase == InputActionPhase.Canceled)
+        {
+            StopChargingAndAttack(3);
         }
     }
-
     public void OnAttack4(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed && Time.time > attackCooldownEndTime4)
+        if (value.phase == InputActionPhase.Performed)
         {
-            StartCoroutine(PerformAttack(4));
+            StartCharging(4);
+        }
+        else if (value.phase == InputActionPhase.Canceled)
+        {
+            StopChargingAndAttack(4);
         }
     }
     public void OnAttack5(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed && Time.time > attackCooldownEndTime4)
+        if (value.phase == InputActionPhase.Performed)
         {
             StartCoroutine(PerformAttack(5));
         }
     }
 
+
     private IEnumerator PerformAttack(int attackType)
     {
         if (isAttacking)
         {
-            yield break; // Si déjà en train d'attaquer, ne fait rien
+            yield break;
+        }
+
+        // Vérifier si le cooldown de l'attaque est terminé
+        switch (attackType)
+        {
+            case 1:
+                if (Time.time < attackCooldownEndTime1) yield break;
+                break;
+            case 2:
+                if (Time.time < attackCooldownEndTime2) yield break;
+                break;
+            case 3:
+                if (Time.time < attackCooldownEndTime3) yield break;
+                break;
+            case 4:
+                if (Time.time < attackCooldownEndTime4) yield break;
+                break;
+            case 5:
+                if (Time.time < attackCooldownEndTime5) yield break;
+                break;
         }
 
         isAttacking = true;
+        isCharging = false;
 
         // Définir la durée de l'attaque et la fin du cooldown en fonction du type d'attaque
         float attackDuration = 0f;
         float attackCooldown = 0f;
-
         Vector3 mouseWolrdPosOnCast = MouseIndicator.GetMouseWorldPosition();
 
         switch (attackType)
@@ -213,40 +249,36 @@ public class PlayerController : MonoBehaviour
                 attackCooldown = attackCooldown1;
                 attackEndTime = Time.time + attackDuration;
                 yield return new WaitForSeconds(attackDuration);
-
                 break;
+
             case 2:
                 SetCurrentState(PlayerState.Attacking2);
                 playerAnimator.CrossFade("Attack2", 0.2f);
                 attackDuration = attackDuration2;
                 attackCooldown = attackCooldown2;
                 attackEndTime = Time.time + attackDuration;
-
                 yield return new WaitForSeconds(attackDuration / 2);
                 if (mouseWolrdPosOnCast != Vector3.zero)
                 {
                     playerAttacksManager.CastAttack2(mouseWolrdPosOnCast);
                 }
-
                 yield return new WaitForSeconds(attackDuration / 2);
-
-
                 break;
+
             case 3:
                 SetCurrentState(PlayerState.Attacking3);
                 playerAnimator.CrossFade("Attack3", 0.2f);
                 attackDuration = attackDuration3;
                 attackCooldown = attackCooldown3;
                 attackEndTime = Time.time + attackDuration;
-
                 yield return new WaitForSeconds(attackDuration / 2 - 0.4f);
                 if (mouseWolrdPosOnCast != Vector3.zero)
                 {
                     playerAttacksManager.CastAttack3();
                 }
-
                 yield return new WaitForSeconds(attackDuration / 2 + 0.4f);
                 break;
+
             case 4:
                 SetCurrentState(PlayerState.Attacking4);
                 playerAnimator.CrossFade("Attack4", 0.2f);
@@ -258,9 +290,9 @@ public class PlayerController : MonoBehaviour
                 {
                     playerAttacksManager.CastAttack4();
                 }
-
                 yield return new WaitForSeconds(attackDuration / 2);
                 break;
+
             case 5:
                 SetCurrentState(PlayerState.Attacking5);
                 playerAnimator.CrossFade("Attack5", 0.2f);
@@ -272,12 +304,10 @@ public class PlayerController : MonoBehaviour
                 {
                     playerAttacksManager.CastAttack5();
                 }
-
                 yield return new WaitForSeconds(attackDuration / 2);
                 break;
         }
 
-        
         actionEndTime = attackEndTime;
         isAttacking = false;
 
@@ -296,12 +326,12 @@ public class PlayerController : MonoBehaviour
             case 4:
                 attackCooldownEndTime4 = Time.time + attackCooldown;
                 break;
-
             case 5:
                 attackCooldownEndTime5 = Time.time + attackCooldown;
                 break;
         }
     }
+
 
     private IEnumerator PerformDash()
     {
@@ -526,5 +556,43 @@ public class PlayerController : MonoBehaviour
     {
         oldState = currentState;
         currentState = newState;
+    }
+
+    private void StartCharging(int attackType)
+    {
+        if (isAttacking || isDashing || isInteracting || isCharging)
+        {
+            return;
+        }
+
+        isCharging = true;
+        currentChargingAttackType = attackType;
+        SetCurrentState(PlayerState.Charging);
+
+        // Display the attack pattern based on attack type
+        switch (attackType)
+        {
+            case 2:
+                playerAttacksManager.DisplayAttack2Pattern();
+                break;
+            case 3:
+                playerAttacksManager.DisplayAttack3Pattern();
+                break;
+            case 4:
+                playerAttacksManager.DisplayAttack4Pattern();
+                break;
+        }
+    }
+
+    private void StopChargingAndAttack(int attackType)
+    {
+        playerAttacksManager.HideAllAttackPatterns();
+        if (!isCharging || currentChargingAttackType != attackType)
+        {
+            return;
+        }
+
+        isCharging = false;
+        StartCoroutine(PerformAttack(attackType));
     }
 }
