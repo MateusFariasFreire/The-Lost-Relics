@@ -5,10 +5,15 @@ public class MouseIndicator : MonoBehaviour
 {
     private Camera mainCamera;
 
+    [SerializeField] private LayerMask groundLayer;
+
     private void Start()
     {
         mainCamera = Camera.main;
-        gameObject.GetComponent<MeshRenderer>().enabled = false; // Désactiver l'indicateur au début
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Update()
@@ -18,17 +23,29 @@ public class MouseIndicator : MonoBehaviour
 
     private void UpdateIndicatorPosition()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Vector3 mouseWorldPos = GetMouseWorldPosition();
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (mouseWorldPos != Vector3.zero)
         {
-            // Mettre à jour la position du GameObject auquel le script est attaché
-            transform.position = hit.point;
-            gameObject.GetComponent<MeshRenderer>().enabled = true; // Activer l'indicateur lorsqu'il est sur une surface
+            transform.position = mouseWorldPos;
+            gameObject.GetComponent<MeshRenderer>().enabled = true;
         }
         else
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = false;  // Désactiver l'indicateur si pas de surface touchée
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
         }
+    }
+
+    static public Vector3 GetMouseWorldPosition()
+    {
+
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+        {
+            return hit.point;
+        }
+
+        return Vector3.zero;
+
     }
 }

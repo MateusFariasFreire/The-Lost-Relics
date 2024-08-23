@@ -12,7 +12,6 @@ public class MeshTrail : MonoBehaviour
     [SerializeField] private float shaderVariableRate = 0.1f;
     [SerializeField] private float shaderVariableRefreshRate = 0.05f;
 
-    private bool trailActive = false;
 
     public void DisplayMeshTrail(float trailTime)
     {

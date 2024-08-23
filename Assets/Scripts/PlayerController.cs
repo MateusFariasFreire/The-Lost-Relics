@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 10f;
     [SerializeField] private float dashSpeed = 20f;
-    [SerializeField] private float dashDuration = 0.5f; // Durée du dash
+    [SerializeField] private float dashDuration = 0.5f;
     [SerializeField] private float attackDuration1 = 1f;
     [SerializeField] private float attackDuration2 = 1f;
     [SerializeField] private float attackDuration3 = 1f;
@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MeshTrail dashMeshTrail;
 
     private PlayerState currentState = PlayerState.Idle;
+    private PlayerState oldState = PlayerState.Idle;
     private MovementDirection currentDirection = MovementDirection.None;
     private MovementDirection relativeMovementDirection = MovementDirection.None;
 
@@ -157,7 +158,7 @@ public class PlayerController : MonoBehaviour
         if (value.phase == InputActionPhase.Performed)
         {
             isDefending = true;
-            currentState = PlayerState.Defending;
+            SetCurrentState(PlayerState.Defending);
             playerAnimator.Play("Block");
         }
         else if (value.phase == InputActionPhase.Canceled)
@@ -211,48 +212,67 @@ public class PlayerController : MonoBehaviour
         float attackDuration = 0f;
         float attackCooldown = 0f;
 
+        Vector3 mouseWolrdPosOnCast = MouseIndicator.GetMouseWorldPosition();
+
         switch (attackType)
         {
             case 1:
-                currentState = PlayerState.Attacking1;
-                playerAnimator.CrossFade("Attack1", 0f);
+                SetCurrentState(PlayerState.Attacking1);
+                playerAnimator.CrossFade("Attack1", 0.2f);
                 playerAttacksManager.CastAttack1();
                 attackDuration = attackDuration1;
                 attackCooldown = attackCooldown1;
 
                 break;
             case 2:
-                { 
-                    currentState = PlayerState.Attacking2;
-                    playerAnimator.CrossFade("Attack2", 0f);
-                    Vector3 mouseWorldPos = GetMouseWorldPos();
-                    if (mouseWorldPos != new Vector3())
-                    {
-                        playerAttacksManager.CastAttack2(mouseWorldPos);
-                        attackDuration = attackDuration2;
-                        attackCooldown = attackCooldown2;
-                    }
-                }
+                SetCurrentState(PlayerState.Attacking2);
+                playerAnimator.CrossFade("Attack2", 0.2f);
+                attackDuration = attackDuration2;
+                attackCooldown = attackCooldown2;
                 break;
             case 3:
-                currentState = PlayerState.Attacking3;
-                playerAnimator.CrossFade("Attack3", 0f);
+                SetCurrentState(PlayerState.Attacking3);
+                playerAnimator.CrossFade("Attack3", 0.2f);
                 attackDuration = attackDuration3;
                 attackCooldown = attackCooldown3;
                 break;
             case 4:
-                currentState = PlayerState.Attacking4;
-                playerAnimator.CrossFade("Attack4", 0f);
+                SetCurrentState(PlayerState.Attacking4);
+                playerAnimator.CrossFade("Attack4", 0.2f);
                 attackDuration = attackDuration4;
                 attackCooldown = attackCooldown4;
                 break;
         }
 
         attackEndTime = Time.time + attackDuration;
-        actionEndTime = attackEndTime; // Empêche les autres actions pendant l'attaque
+        actionEndTime = attackEndTime;
 
-        // Attendez la durée de l'attaque
-        yield return new WaitForSeconds(attackDuration);
+        if (attackType == 2)
+        {
+            yield return new WaitForSeconds(attackDuration/2);
+            if (mouseWolrdPosOnCast != Vector3.zero)
+            {
+                playerAttacksManager.CastAttack2(mouseWolrdPosOnCast);
+            }
+
+            yield return new WaitForSeconds(attackDuration/2);
+
+        }else if (attackType == 3)
+        {
+            yield return new WaitForSeconds(attackDuration / 2);
+            if (mouseWolrdPosOnCast != Vector3.zero)
+            {
+                playerAttacksManager.CastAttack3();
+            }
+
+            yield return new WaitForSeconds(attackDuration / 2);
+        }
+        else
+        {
+            yield return new WaitForSeconds(attackDuration);
+        }
+
+
 
         isAttacking = false;
 
@@ -282,11 +302,11 @@ public class PlayerController : MonoBehaviour
         }
 
         isDashing = true;
-        currentState = PlayerState.Dashing;
+        SetCurrentState(PlayerState.Dashing);
 
         Vector3 dashDirection = GetMovementDirection();
 
-        if (dashDirection == Vector3.zero) 
+        if (dashDirection == Vector3.zero)
         {
             dashDirection = transform.forward.normalized;
         }
@@ -299,7 +319,7 @@ public class PlayerController : MonoBehaviour
         switch (dashDirectionRelative)
         {
             case MovementDirection.Forward:
-                playerAnimator.CrossFade("DashForward",0f);
+                playerAnimator.CrossFade("DashForward", 0f);
                 break;
             case MovementDirection.Backward:
                 isDashing = false;
@@ -337,7 +357,7 @@ public class PlayerController : MonoBehaviour
         playerAnimator.Play("Interact");
 
         isInteracting = true;
-        currentState = PlayerState.Interacting;
+        SetCurrentState(PlayerState.Interacting);
         actionEndTime = Time.time + interactionDuration;
 
         // Attendez la durée de l'interaction
@@ -350,9 +370,9 @@ public class PlayerController : MonoBehaviour
     {
         if (inputDirection == Vector2.zero)
         {
-            currentState = PlayerState.Idle;
+            SetCurrentState(PlayerState.Idle);
             playerAnimator.Play("Idle");
-            relativeMovementDirection = MovementDirection.None; // Aucune direction
+            relativeMovementDirection = MovementDirection.None;
             return;
         }
 
@@ -363,7 +383,7 @@ public class PlayerController : MonoBehaviour
 
         characterController.Move(moveDirection * speed * Time.deltaTime);
         currentDirection = DetermineMovementDirection(moveDirection);
-        currentState = isRunning && (relativeMovementDirection != MovementDirection.Backward) ? PlayerState.Running : PlayerState.Walking;
+        SetCurrentState(isRunning && (relativeMovementDirection != MovementDirection.Backward) ? PlayerState.Running : PlayerState.Walking);
 
         if (currentState == PlayerState.Running)
         {
@@ -487,28 +507,15 @@ public class PlayerController : MonoBehaviour
 
     private void RotateTowardsMouse()
     {
-        // Exemple de rotation vers la souris (ou autre point de ciblage)
-        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            Vector3 directionToMouse = (hit.point - transform.position).normalized;
-            directionToMouse.y = 0; // Ignorer la composante Y pour la rotation horizontale
-            Quaternion targetRotation = Quaternion.LookRotation(directionToMouse);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
-        }
+        Vector3 directionToMouse = (MouseIndicator.GetMouseWorldPosition() - transform.position).normalized;
+        directionToMouse.y = 0; // Ignorer la composante Y pour la rotation horizontale
+        Quaternion targetRotation = Quaternion.LookRotation(directionToMouse);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
-    private Vector3 GetMouseWorldPos()
+    private void SetCurrentState(PlayerState newState)
     {
-        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            return hit.point;
-        }
-        else
-        {
-            return new Vector3();
-        }
+        oldState = currentState;
+        currentState = newState;
     }
 }
