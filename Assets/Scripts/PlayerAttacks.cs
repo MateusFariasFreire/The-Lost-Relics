@@ -14,7 +14,7 @@ public class PlayerAttacks : MonoBehaviour
 
     [SerializeField] private GameObject attack4Prefab;
 
-    [SerializeField] private GameObject shieldPrefab;
+    [SerializeField] private GameObject attack5Prefab;
 
     public void CastAttack1()
     {
@@ -37,9 +37,9 @@ public class PlayerAttacks : MonoBehaviour
         GameObject attack3 = Instantiate(attack3Prefab, staffSpawnPoint.position, transform.rotation);
     }
 
-    public void CastShield()
+    public void CastAttack5()
     {
-        GameObject shield = Instantiate(shieldPrefab, transform.position, transform.rotation);
+        GameObject shield = Instantiate(attack5Prefab, transform.position, transform.rotation);
     }
 
 }

@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Defend",
+                    "name": "Attack5",
                     "type": "Button",
                     "id": "212f3b6c-495a-4737-92d3-f9a1d7e49949",
                     "expectedControlType": "Button",
@@ -243,11 +243,11 @@
                 {
                     "name": "",
                     "id": "64645abc-c4cc-4340-881e-389ae3f90307",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Defend",
+                    "action": "Attack5",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

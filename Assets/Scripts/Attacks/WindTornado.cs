@@ -7,6 +7,7 @@ public class WindTornado : MonoBehaviour
 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float duration = 5f;
+    [SerializeField] private float bumpForce = 5f;
 
     void Update()
     {
@@ -22,6 +23,6 @@ public class WindTornado : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+        other.GetComponent<Rigidbody>().AddForce(transform.up * bumpForce, ForceMode.Impulse);
     }
 }

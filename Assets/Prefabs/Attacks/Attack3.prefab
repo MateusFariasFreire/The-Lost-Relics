@@ -29672,6 +29672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   duration: 1.5
+  bumpForce: 10
 --- !u!135 &-1408664679953029145
 SphereCollider:
   m_ObjectHideFlags: 0
