@@ -1098,7 +1098,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4807137643036592822
 Transform:
   m_ObjectHideFlags: 0
@@ -1573,7 +1573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8205141711318940902
 Transform:
   m_ObjectHideFlags: 0
@@ -2105,6 +2105,7 @@ GameObject:
   - component: {fileID: 5349239255431629695}
   - component: {fileID: 240872084920592517}
   - component: {fileID: 6614112013299528645}
+  - component: {fileID: 1873957621609354500}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2345,18 +2346,10 @@ MonoBehaviour:
   runSpeed: 10
   dashSpeed: 25
   dashDuration: 0.3
-  attackDuration1: 0.3
-  attackDuration2: 1
-  attackDuration3: 1.6
-  attackDuration4: 1.367
-  attackDuration5: 1
-  interactionDuration: 2.1
-  attackCooldown1: 0.5
-  attackCooldown2: 4
-  attackCooldown3: 3
-  attackCooldown4: 6
-  attackCooldown5: 5
+  interactionDuration: 1.3
   dashMeshTrail: {fileID: 6614112013299528645}
+  gravity: -9.81
+  currentState: 0
 --- !u!143 &4620498658957557141
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2382,7 +2375,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.99, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!95 &5349239255431629695
 Animator:
   serializedVersion: 5
@@ -2417,20 +2410,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   staffSpawnPoint: {fileID: 1909804739477284676}
+  indicatorActiveMaterial: {fileID: 2100000, guid: d4e18e00a10fae34fa3d88289846db58,
+    type: 2}
+  indicatorInactiveMaterial: {fileID: 2100000, guid: 643e0a84054e12c4a8018b7bb8b311e9,
+    type: 2}
   attack1Prefab: {fileID: 5032455401692733444, guid: 8251e9d1887eae94095946b18e6ba796,
     type: 3}
+  attack1AnimDuration: 0.3
+  attackCooldown1: 0.5
   attack2Prefab: {fileID: 2187139637952854751, guid: 56d0d7aa2f1faa141a80d7f30323e05a,
     type: 3}
+  attack2AnimDuration: 0.8
+  attackCooldown2: 4
   attack2Height: 4
   attack2Canvas: {fileID: 6080865406149375492}
   attack3Prefab: {fileID: 8610179932908058241, guid: 55e5c777f5923b248976eb486297fb8f,
     type: 3}
+  attack3AnimDuration: 1
+  attackCooldown3: 3
   attack3Canvas: {fileID: 6376690799692094142}
   attack4Prefab: {fileID: 1830582398703627632, guid: 629a3c942a142454da0ce161365f4846,
     type: 3}
+  attack4AnimDuration: 1.367
+  attackCooldown4: 5
   attack4Canvas: {fileID: 4921376434936097600}
   attack5Prefab: {fileID: 1562450353554470444, guid: 5ee61837db28d3a498a257caeb85f1f4,
     type: 3}
+  attack5AnimDuration: 1
+  attackCooldown5: 5
 --- !u!114 &6614112013299528645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2449,6 +2456,29 @@ MonoBehaviour:
   shaderVariableRef: _Alpha
   shaderVariableRate: 0.1
   shaderVariableRefreshRate: 0.05
+--- !u!136 &1873957621609354500
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008937764625672857}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &6049647392431150311
 GameObject:
   m_ObjectHideFlags: 0

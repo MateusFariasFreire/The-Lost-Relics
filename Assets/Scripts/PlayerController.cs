@@ -15,11 +15,7 @@ public class PlayerController : MonoBehaviour
         Interacting,
         Dashing,
         Charging,
-        Attacking1,
-        Attacking2,
-        Attacking3,
-        Attacking4,
-        Attacking5
+        Attacking
     }
 
     public enum MovementDirection
@@ -36,24 +32,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float runSpeed = 10f;
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.5f;
-    [SerializeField] private float attackDuration1 = 1f;
-    [SerializeField] private float attackDuration2 = 1f;
-    [SerializeField] private float attackDuration3 = 1f;
-    [SerializeField] private float attackDuration4 = 1f;
-    [SerializeField] private float attackDuration5 = 1f;
     [SerializeField] private float interactionDuration = 2f;
-
-    [Header("Attack Cooldowns")]
-    [SerializeField] private float attackCooldown1 = 2f;
-    [SerializeField] private float attackCooldown2 = 3f;
-    [SerializeField] private float attackCooldown3 = 4f;
-    [SerializeField] private float attackCooldown4 = 5f;
-    [SerializeField] private float attackCooldown5 = 5f;
 
     [Header("Dash Effect")]
     [SerializeField] private MeshTrail dashMeshTrail;
 
-    private PlayerState currentState = PlayerState.Idle;
+    [Header("Gravity")]
+    [SerializeField] private float gravity = -9.81f;
+    private float verticalVelocity = 0f;
+
+    public PlayerState CurrentState { get { return currentState; } }
+    [SerializeField] private PlayerState currentState = PlayerState.Idle;
     private PlayerState oldState = PlayerState.Idle;
     private MovementDirection currentDirection = MovementDirection.None;
     private MovementDirection relativeMovementDirection = MovementDirection.None;
@@ -62,19 +51,14 @@ public class PlayerController : MonoBehaviour
     private bool isRunning;
     private bool isDashing;
     private bool isInteracting;
-    private bool isAttacking; 
+    private bool isAttacking;
     private bool isCharging;
+    private bool isGrounded;
     private int currentChargingAttackType;
 
     private float actionEndTime = 0f;
-    private float attackEndTime = 0f;
-    private float attackCooldownEndTime1 = 0f;
-    private float attackCooldownEndTime2 = 0f;
-    private float attackCooldownEndTime3 = 0f;
-    private float attackCooldownEndTime4 = 0f;
-    private float attackCooldownEndTime5 = 0f;
 
-    Animator playerAnimator;
+    private Animator playerAnimator;
     private PlayerAttacks playerAttacksManager;
 
     private void Start()
@@ -89,7 +73,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Time.time < actionEndTime)
         {
-            // Bloque les actions spéciales si une animation est en cours
             if (isAttacking || isInteracting || isDashing)
             {
                 return;
@@ -98,19 +81,41 @@ public class PlayerController : MonoBehaviour
 
         if (isAttacking)
         {
-            // Ne permet pas le mouvement pendant une attaque
             currentDirection = MovementDirection.None;
             return;
         }
 
         if (isInteracting || isDashing)
         {
-            return; // Bloque les autres actions pendant interaction ou dash
+            return;
         }
 
-        // Gérer le mouvement et la direction après les contrôles d'état
+        // Gérer le mouvement et la rotation
         HandleMovement();
         RotateTowardsMouse();
+
+        // Appliquer la gravité
+        ApplyGravity();
+    }
+
+    private void ApplyGravity()
+    {
+        if (!isDashing)
+        {
+            isGrounded = characterController.isGrounded;
+
+            if (isGrounded && verticalVelocity < 0)
+            {
+                verticalVelocity = -2f; // Garder une légère pression vers le sol pour éviter de quitter le sol
+            }
+            else
+            {
+                verticalVelocity += gravity * Time.deltaTime; // Appliquer la gravité en continu
+            }
+
+            Vector3 gravityMove = new Vector3(0, verticalVelocity, 0);
+            characterController.Move(gravityMove * Time.deltaTime);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext value)
@@ -156,10 +161,9 @@ public class PlayerController : MonoBehaviour
     {
         if (value.phase == InputActionPhase.Performed)
         {
-            StartCoroutine(PerformAttack(1));
+            StartCoroutine(HandleAttack(1));
         }
     }
-
 
     public void OnAttack2(InputAction.CallbackContext value)
     {
@@ -169,7 +173,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (value.phase == InputActionPhase.Canceled)
         {
-            StopChargingAndAttack(2);
+            Attack(2);
         }
     }
 
@@ -181,9 +185,10 @@ public class PlayerController : MonoBehaviour
         }
         else if (value.phase == InputActionPhase.Canceled)
         {
-            StopChargingAndAttack(3);
+            Attack(3);
         }
     }
+
     public void OnAttack4(InputAction.CallbackContext value)
     {
         if (value.phase == InputActionPhase.Performed)
@@ -192,146 +197,17 @@ public class PlayerController : MonoBehaviour
         }
         else if (value.phase == InputActionPhase.Canceled)
         {
-            StopChargingAndAttack(4);
+            Attack(4);
         }
     }
+
     public void OnAttack5(InputAction.CallbackContext value)
     {
         if (value.phase == InputActionPhase.Performed)
         {
-            StartCoroutine(PerformAttack(5));
+            StartCoroutine(HandleAttack(5));
         }
     }
-
-
-    private IEnumerator PerformAttack(int attackType)
-    {
-        if (isAttacking)
-        {
-            yield break;
-        }
-
-        // Vérifier si le cooldown de l'attaque est terminé
-        switch (attackType)
-        {
-            case 1:
-                if (Time.time < attackCooldownEndTime1) yield break;
-                break;
-            case 2:
-                if (Time.time < attackCooldownEndTime2) yield break;
-                break;
-            case 3:
-                if (Time.time < attackCooldownEndTime3) yield break;
-                break;
-            case 4:
-                if (Time.time < attackCooldownEndTime4) yield break;
-                break;
-            case 5:
-                if (Time.time < attackCooldownEndTime5) yield break;
-                break;
-        }
-
-        isAttacking = true;
-        isCharging = false;
-
-        // Définir la durée de l'attaque et la fin du cooldown en fonction du type d'attaque
-        float attackDuration = 0f;
-        float attackCooldown = 0f;
-        Vector3 mouseWolrdPosOnCast = MouseIndicator.GetMouseWorldPosition();
-
-        switch (attackType)
-        {
-            case 1:
-                SetCurrentState(PlayerState.Attacking1);
-                playerAnimator.CrossFade("Attack1", 0.2f);
-                playerAttacksManager.CastAttack1();
-                attackDuration = attackDuration1;
-                attackCooldown = attackCooldown1;
-                attackEndTime = Time.time + attackDuration;
-                yield return new WaitForSeconds(attackDuration);
-                break;
-
-            case 2:
-                SetCurrentState(PlayerState.Attacking2);
-                playerAnimator.CrossFade("Attack2", 0.2f);
-                attackDuration = attackDuration2;
-                attackCooldown = attackCooldown2;
-                attackEndTime = Time.time + attackDuration;
-                yield return new WaitForSeconds(attackDuration / 2);
-                if (mouseWolrdPosOnCast != Vector3.zero)
-                {
-                    playerAttacksManager.CastAttack2(mouseWolrdPosOnCast);
-                }
-                yield return new WaitForSeconds(attackDuration / 2);
-                break;
-
-            case 3:
-                SetCurrentState(PlayerState.Attacking3);
-                playerAnimator.CrossFade("Attack3", 0.2f);
-                attackDuration = attackDuration3;
-                attackCooldown = attackCooldown3;
-                attackEndTime = Time.time + attackDuration;
-                yield return new WaitForSeconds(attackDuration / 2 - 0.4f);
-                if (mouseWolrdPosOnCast != Vector3.zero)
-                {
-                    playerAttacksManager.CastAttack3();
-                }
-                yield return new WaitForSeconds(attackDuration / 2 + 0.4f);
-                break;
-
-            case 4:
-                SetCurrentState(PlayerState.Attacking4);
-                playerAnimator.CrossFade("Attack4", 0.2f);
-                attackDuration = attackDuration4;
-                attackCooldown = attackCooldown4;
-                attackEndTime = Time.time + attackDuration;
-                yield return new WaitForSeconds(attackDuration / 2);
-                if (mouseWolrdPosOnCast != Vector3.zero)
-                {
-                    playerAttacksManager.CastAttack4();
-                }
-                yield return new WaitForSeconds(attackDuration / 2);
-                break;
-
-            case 5:
-                SetCurrentState(PlayerState.Attacking5);
-                playerAnimator.CrossFade("Attack5", 0.2f);
-                attackDuration = attackDuration5;
-                attackCooldown = attackCooldown5;
-                attackEndTime = Time.time + attackDuration;
-                yield return new WaitForSeconds(attackDuration / 2);
-                if (mouseWolrdPosOnCast != Vector3.zero)
-                {
-                    playerAttacksManager.CastAttack5();
-                }
-                yield return new WaitForSeconds(attackDuration / 2);
-                break;
-        }
-
-        actionEndTime = attackEndTime;
-        isAttacking = false;
-
-        // Mettre à jour le temps de cooldown pour l'attaque effectuée
-        switch (attackType)
-        {
-            case 1:
-                attackCooldownEndTime1 = Time.time + attackCooldown;
-                break;
-            case 2:
-                attackCooldownEndTime2 = Time.time + attackCooldown;
-                break;
-            case 3:
-                attackCooldownEndTime3 = Time.time + attackCooldown;
-                break;
-            case 4:
-                attackCooldownEndTime4 = Time.time + attackCooldown;
-                break;
-            case 5:
-                attackCooldownEndTime5 = Time.time + attackCooldown;
-                break;
-        }
-    }
-
 
     private IEnumerator PerformDash()
     {
@@ -364,15 +240,14 @@ public class PlayerController : MonoBehaviour
                 isDashing = false;
                 yield break;
             case MovementDirection.Right:
-
                 playerAnimator.CrossFade("DashRight", 0f);
                 break;
             case MovementDirection.Left:
-
                 playerAnimator.CrossFade("DashLeft", 0f);
                 break;
-
         }
+
+        
 
         dashMeshTrail.DisplayMeshTrail(dashDuration);
 
@@ -381,7 +256,6 @@ public class PlayerController : MonoBehaviour
             characterController.Move(dashDirection * dashSpeed * Time.deltaTime);
             yield return null;
         }
-
 
         isDashing = false;
         actionEndTime = Time.time + dashDuration; // Bloquer les autres actions pendant la durée du dash
@@ -393,7 +267,7 @@ public class PlayerController : MonoBehaviour
         {
             yield break; // Si déjà en train d'interagir ou d'une autre action, ne fait rien
         }
-        playerAnimator.Play("Interact");
+        playerAnimator.CrossFade("Interact",0.1f);
 
         isInteracting = true;
         SetCurrentState(PlayerState.Interacting);
@@ -403,6 +277,18 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(interactionDuration);
 
         isInteracting = false;
+    }
+
+    private IEnumerator HandleAttack(int attackType)
+    {
+        float attackDuration = playerAttacksManager.CastAttack(attackType);
+        if (attackDuration > 0f)
+        {
+            isAttacking = true;
+            SetCurrentState(PlayerState.Attacking);
+            yield return new WaitForSeconds(attackDuration);
+            isAttacking = false;
+        }
     }
 
     private void HandleMovement()
@@ -420,7 +306,11 @@ public class PlayerController : MonoBehaviour
 
         float speed = isRunning && (relativeMovementDirection != MovementDirection.Backward) ? runSpeed : walkSpeed;
 
-        characterController.Move(moveDirection * speed * Time.deltaTime);
+        // Mouvement horizontal uniquement (sans gravité)
+        Vector3 horizontalMove = moveDirection * speed;
+
+        characterController.SimpleMove(horizontalMove);
+
         currentDirection = DetermineMovementDirection(moveDirection);
         SetCurrentState(isRunning && (relativeMovementDirection != MovementDirection.Backward) ? PlayerState.Running : PlayerState.Walking);
 
@@ -441,7 +331,6 @@ public class PlayerController : MonoBehaviour
         }
         else if (currentState == PlayerState.Walking)
         {
-
             switch (relativeMovementDirection)
             {
                 case MovementDirection.Forward:
@@ -449,11 +338,9 @@ public class PlayerController : MonoBehaviour
                 case MovementDirection.Left:
                     playerAnimator.Play("WalkingForward");
                     break;
-
                 case MovementDirection.Backward:
                     playerAnimator.Play("WalkingBackwards");
                     break;
-
             }
         }
     }
@@ -484,8 +371,6 @@ public class PlayerController : MonoBehaviour
 
     private MovementDirection DetermineMovementDirection(Vector3 moveDirection)
     {
-
-
         //Calculer la position relative par rapport à l'avant du personnage, la caméra ne tourne pas avec le personnage, calcule par rapport à l'input et à la caméra
 
         if (moveDirection == Vector3.zero)
@@ -511,7 +396,6 @@ public class PlayerController : MonoBehaviour
         {
             return MovementDirection.Backward;
         }
-
     }
 
     private MovementDirection DetermineRelativeMovementDirection(Vector3 moveDirection)
@@ -541,7 +425,6 @@ public class PlayerController : MonoBehaviour
         {
             return MovementDirection.Backward;
         }
-
     }
 
     private void RotateTowardsMouse()
@@ -584,7 +467,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void StopChargingAndAttack(int attackType)
+    private void Attack(int attackType)
     {
         playerAttacksManager.HideAllAttackPatterns();
         if (!isCharging || currentChargingAttackType != attackType)
@@ -593,6 +476,6 @@ public class PlayerController : MonoBehaviour
         }
 
         isCharging = false;
-        StartCoroutine(PerformAttack(attackType));
+        StartCoroutine(HandleAttack(attackType));
     }
 }

@@ -30,8 +30,6 @@ public class GravityBall : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("here");
-
         Vector3 direction = transform.position - other.transform.position;
         other.GetComponent<Rigidbody>().AddForce(direction.normalized * attractionForce * Time.deltaTime, ForceMode.Impulse);
     }

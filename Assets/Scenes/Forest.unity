@@ -2341,7 +2341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d738692715db14ebd2d4a89f0db9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 8057053371827911637, guid: 31f5e231b19d91449892c8fcc59e8f90,
+  enemyPrefab: {fileID: 9047240940191343493, guid: 629522b340c07f14daa8d2138dc20e77,
     type: 3}
   spawnRate: 1
   spawnRadius: 5
@@ -3664,7 +3664,7 @@ PrefabInstance:
     - target: {fileID: 2401554316796219584, guid: 807ffef6cd987064fb804b648099ba3c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4.43
       objectReference: {fileID: 0}
     - target: {fileID: 2401554316796219584, guid: 807ffef6cd987064fb804b648099ba3c,
         type: 3}
@@ -3778,11 +3778,6 @@ PrefabInstance:
     - target: {fileID: 67515991825925767, guid: f7953d42302305843bd2ed9021738051,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6192655301650170519, guid: f7953d42302305843bd2ed9021738051,
-        type: 3}
-      propertyPath: groundLayer.m_Bits
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8828491706935027535, guid: f7953d42302305843bd2ed9021738051,

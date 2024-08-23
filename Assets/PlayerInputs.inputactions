@@ -177,7 +177,7 @@
                 {
                     "name": "",
                     "id": "0dded9ed-c9d1-4b9d-8aeb-d0789111cb5c",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -210,7 +210,7 @@
                 {
                     "name": "",
                     "id": "3819b291-d61c-4f61-aeb2-f1a6b091f77c",
-                    "path": "<Keyboard>/2",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -221,7 +221,7 @@
                 {
                     "name": "",
                     "id": "0184fa45-4ae2-4cea-bd18-1c91227c4184",
-                    "path": "<Keyboard>/3",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -232,7 +232,7 @@
                 {
                     "name": "",
                     "id": "9d9fd702-52fe-4388-bf96-4dfbd6f82b48",
-                    "path": "<Keyboard>/4",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -243,7 +243,7 @@
                 {
                     "name": "",
                     "id": "64645abc-c4cc-4340-881e-389ae3f90307",
-                    "path": "<Keyboard>/5",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
