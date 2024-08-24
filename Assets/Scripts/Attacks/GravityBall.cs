@@ -28,19 +28,13 @@ public class GravityBall : MonoBehaviour
         if (character != null)
         {
             Vector3 direction = transform.position - other.transform.position;
-            float distance = direction.magnitude;
+            direction.y = 0;
 
-            if (distance < pullDistance)
-            {
-                // Ne pas influencer la hauteur du personnage
-                direction.y = 0;
+            // Appliquer une force d'attraction uniforme
+            Vector3 pull = direction.normalized * attractionForce * Time.deltaTime;
 
-                // Appliquer une force d'attraction uniforme
-                Vector3 pull = direction.normalized * attractionForce * Time.deltaTime;
-
-                // Déplacer le CharacterController directement
-                character.Move(pull);
-            }
+            // Déplacer le CharacterController directement
+            character.Move(pull);
         }
     }
 

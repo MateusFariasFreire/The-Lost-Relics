@@ -22,6 +22,7 @@ public class MeshTrail : MonoBehaviour
     {
         List<SkinnedMeshRenderer> skinnedMeshRenderers = new List<SkinnedMeshRenderer>();
         List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+        GameObject empty = new GameObject("PlayerTrail");
 
 
         while (trailTime > 0f)
@@ -45,6 +46,7 @@ public class MeshTrail : MonoBehaviour
             {
                 GameObject gObj = new GameObject();
                 gObj.transform.SetPositionAndRotation(transform.position, transform.rotation);
+                gObj.transform.parent = empty.transform;
 
                 MeshRenderer meshRenderer = gObj.AddComponent<MeshRenderer>();
                 MeshFilter meshFilter = gObj.AddComponent<MeshFilter>();
@@ -64,6 +66,7 @@ public class MeshTrail : MonoBehaviour
             {
                 GameObject gObj = new GameObject();
                 gObj.transform.SetPositionAndRotation(meshRenderers[i].transform.position, meshRenderers[i].transform.rotation);
+                gObj.transform.parent = empty.transform;
 
                 MeshRenderer meshRenderer = gObj.AddComponent<MeshRenderer>();
                 MeshFilter meshFilter = gObj.AddComponent<MeshFilter>();

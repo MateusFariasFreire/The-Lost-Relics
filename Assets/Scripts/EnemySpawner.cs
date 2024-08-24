@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float spawnRate = 1f;
     [SerializeField] private float spawnRadius = 5f;
+    [SerializeField] private float spawnHeight = 1f;
 
     // Update is called once per frame
     void Update()
@@ -17,9 +18,9 @@ public class EnemySpawner : MonoBehaviour
         if (spawnRate <= 0)
         {
             Vector3 randomDirection = Random.insideUnitSphere * spawnRadius;
-            randomDirection.y = 0;
+            randomDirection.y = spawnHeight;
 
-            Instantiate(enemyPrefab, transform.position + randomDirection, Quaternion.identity);
+            Instantiate(enemyPrefab, transform.position + randomDirection, transform.rotation,transform);
 
             spawnRate = 1f;
         }

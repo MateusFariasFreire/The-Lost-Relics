@@ -154,11 +154,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnAttack0(InputAction.CallbackContext value)
+    {
+        if (value.phase == InputActionPhase.Performed)
+        {
+            StartCoroutine(HandleAttack(0));
+        }
+    }
+
     public void OnAttack1(InputAction.CallbackContext value)
     {
         if (value.phase == InputActionPhase.Performed)
         {
-            StartCoroutine(HandleAttack(1));
+            StartCharging(1);
+        }
+        else if (value.phase == InputActionPhase.Canceled)
+        {
+            Attack(1);
         }
     }
 
@@ -190,19 +202,7 @@ public class PlayerController : MonoBehaviour
     {
         if (value.phase == InputActionPhase.Performed)
         {
-            StartCharging(4);
-        }
-        else if (value.phase == InputActionPhase.Canceled)
-        {
-            Attack(4);
-        }
-    }
-
-    public void OnAttack5(InputAction.CallbackContext value)
-    {
-        if (value.phase == InputActionPhase.Performed)
-        {
-            StartCoroutine(HandleAttack(5));
+            StartCoroutine(HandleAttack(4));
         }
     }
 
@@ -276,16 +276,20 @@ public class PlayerController : MonoBehaviour
         isInteracting = false;
     }
 
-    private IEnumerator HandleAttack(int attackType)
+    private IEnumerator HandleAttack(int attackNumber)
     {
-        float attackDuration = playerAttacks.CastAttack(attackType);
-        if (attackDuration > -0.1f)
+        if (!isInteracting)
         {
-            playerAnimator.CrossFade($"Attack{attackType}", 0.1f);
-            isAttacking = true;
-            SetCurrentState(PlayerState.Attacking);
-            yield return new WaitForSeconds(attackDuration);
-            isAttacking = false;
+            float attackDuration = playerAttacks.CastAttack(attackNumber);
+            if (attackDuration > -0.1f)
+            {
+                Debug.Log(attackDuration);
+                playerAnimator.CrossFade($"Attack{attackNumber}", 0.1f);
+                isAttacking = true;
+                SetCurrentState(PlayerState.Attacking);
+                yield return new WaitForSeconds(attackDuration);
+                isAttacking = false;
+            }
         }
     }
 
@@ -439,19 +443,19 @@ public class PlayerController : MonoBehaviour
         currentState = newState;
     }
 
-    private void StartCharging(int attackType)
+    private void StartCharging(int attackNumber)
     {
-        if (isAttacking || isDashing || isInteracting)
+        if (isInteracting)
         {
             return;
         }
 
-        playerAttacks.ShowAttackPreview(attackType);
+        playerAttacks.ShowAttackPreview(attackNumber);
     }
 
-    private void Attack(int attackType)
+    private void Attack(int attackNumber)
     {
         playerAttacks.HideAllAttackPatterns();
-        StartCoroutine(HandleAttack(attackType));
+        StartCoroutine(HandleAttack(attackNumber));
     }
 }

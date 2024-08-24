@@ -122,8 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followZone: 10
   speed: 40
-  lifeTime: 3
-  lerpSpeed: 12
+  lerpSpeed: 10
 --- !u!96 &5871863949123613685
 TrailRenderer:
   serializedVersion: 3
@@ -176,7 +175,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.86190414
+        value: 0.80421066
         inSlope: 0
         outSlope: 0
         tangentMode: 0

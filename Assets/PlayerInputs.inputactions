@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack1",
+                    "name": "Attack0",
                     "type": "Button",
                     "id": "25162e6b-10d4-4390-8785-b4d33ea18271",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack2",
+                    "name": "Attack1",
                     "type": "Button",
                     "id": "343cbbe8-50da-4806-9411-a7e1f95d3ed7",
                     "expectedControlType": "Button",
@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack3",
+                    "name": "Attack2",
                     "type": "Button",
                     "id": "58eeebaf-c6bd-4d62-9ab2-87694a3e8875",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack4",
+                    "name": "Attack3",
                     "type": "Button",
                     "id": "51162270-5ed8-4509-97a3-12385f95c478",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack5",
+                    "name": "Attack4",
                     "type": "Button",
                     "id": "212f3b6c-495a-4737-92d3-f9a1d7e49949",
                     "expectedControlType": "Button",
@@ -203,7 +203,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack1",
+                    "action": "Attack0",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -214,7 +214,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack2",
+                    "action": "Attack1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -225,7 +225,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack3",
+                    "action": "Attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -236,7 +236,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack4",
+                    "action": "Attack3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -247,7 +247,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack5",
+                    "action": "Attack4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

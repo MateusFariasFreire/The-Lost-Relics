@@ -8,6 +8,13 @@ public class BasicAttack : MonoBehaviour
     [SerializeField] private float lerpSpeed = 5f;
 
     private Transform target = null;
+    private Vector3 initialDirection;
+
+    void Start()
+    {
+        // On capture la direction initiale au moment de la création de l'objet
+        initialDirection = transform.forward;
+    }
 
     // Update is called once per frame
     void Update()
@@ -15,7 +22,9 @@ public class BasicAttack : MonoBehaviour
         if (target != null)
         {
             Vector3 targetDirection = (target.position - transform.position).normalized;
-            Vector3 newDirection = Vector3.Lerp(transform.forward, targetDirection, lerpSpeed * Time.deltaTime);
+
+            // On fait le Lerp entre la direction initiale et la direction vers la cible
+            Vector3 newDirection = Vector3.Lerp(initialDirection, targetDirection, lerpSpeed * Time.deltaTime);
 
             transform.rotation = Quaternion.LookRotation(newDirection);
 
@@ -24,6 +33,9 @@ public class BasicAttack : MonoBehaviour
                 Destroy(target.gameObject);
                 Destroy(gameObject);
             }
+
+            // On met à jour la direction initiale pour la prochaine itération
+            initialDirection = newDirection;
         }
         else
         {

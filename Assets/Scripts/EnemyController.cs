@@ -1,27 +1,51 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class EnemyController : MonoBehaviour
 {
-    private GameObject player;
+    public enum EnemyState
+    {
+        Idle,
+        Walking,
+        Attacking
+    }
+
+    public enum AttackType
+    {
+        Melee,
+        Ranged
+    }
+
+    [SerializeField] private EnemyState currentState = EnemyState.Idle;
+
+    
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
+    [SerializeField] private float gravity = -9.81f;
+    private float verticalVelocity = 0f;
+
+    [Header("Fighting Stats")]
+    [SerializeField] private int damage = 10;
+    [SerializeField] private int health = 50;
     [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float cooldown = 2f;
+    [SerializeField] private float attackAnimationDuration = 1f;
+    [SerializeField] private AttackType attackType = AttackType.Melee;
+    public bool canAttack = true;
+
+    [Header("Detection")]
     [SerializeField] private float detectionRange = 10f;
     [SerializeField] private float maxVerticalDifference = 2f;
-
     [SerializeField] private LayerMask environmentLayerMask;
-
+    
+    private GameObject player;
     private Animator animator;
+    private CharacterController characterController;
 
-    CharacterController characterController;
+    private bool isGrounded = false;
+    private bool isAttacking = false;
 
-    private float verticalVelocity = 0f;
-    [SerializeField] private float gravity = -9.81f;
-
-    bool isGrounded = false;
 
     private void Start()
     {
@@ -31,44 +55,66 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        checkForPlayer();
+        if (isAttacking)
+        {
+            ApplyGravity();
+            return;
+        }
 
         if (player != null)
         {
             if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
             {
-                Attack();
+                if (canAttack)
+                {
+                    SetState(EnemyState.Attacking);
+                    Attack();
+                }
+                else
+                {
+                    SetState(EnemyState.Idle);
+                }
             }
             else
             {
                 if (isGrounded)
                 {
+                    SetState(EnemyState.Walking);
                     RotateAndMoveTowardsPlayer();
                 }
             }
         }
+        else
+        {
+            checkForPlayer();
+            SetState(EnemyState.Idle);
+        }
 
         ApplyGravity();
+        UpdateAnimations();
     }
 
     private void RotateAndMoveTowardsPlayer()
     {
+        if (isAttacking) return;
+
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Appliquer directement la rotation cible sur l'axe Y
         transform.rotation = targetRotation;
 
-        // Utiliser CharacterController pour le mouvement
         Vector3 moveDirection = transform.forward * moveSpeed;
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
     private void checkForPlayer()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange);
+        Vector3 overlapPos = transform.position;
+        overlapPos.y += 1f;
+
+        Collider[] hitColliders = Physics.OverlapSphere(overlapPos, detectionRange);
 
         foreach (var hitCollider in hitColliders)
         {
@@ -95,7 +141,28 @@ public class EnemyController : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Attacked");
+        StartCoroutine(PerformAttack());
+    }
+
+    IEnumerator PerformAttack()
+    {
+        isAttacking = true;
+        canAttack = false;
+
+        animator.Play("Attack");
+        yield return new WaitForSeconds(attackAnimationDuration);
+
+        if (attackType == AttackType.Melee)
+        {
+            player.GetComponent<HealthAndManaManager>().TakeDamage(damage);
+        }
+
+        isAttacking = false;
+
+        yield return new WaitForSeconds(cooldown - attackAnimationDuration);
+
+        canAttack = true;
+
     }
 
     private void ApplyGravity()
@@ -104,29 +171,53 @@ public class EnemyController : MonoBehaviour
 
         if (!isGrounded)
         {
-            // Appliquer la gravité si l'ennemi n'est pas au sol
             verticalVelocity += gravity * Time.deltaTime;
         }
         else
         {
-            verticalVelocity = -2f; // Assurer que l'ennemi reste au sol
+            verticalVelocity = -2f;
         }
 
         Vector3 gravityMove = new Vector3(0, verticalVelocity, 0);
         characterController.Move(gravityMove * Time.deltaTime);
     }
 
+    private void UpdateAnimations()
+    {
+        switch (currentState)
+        {
+            case EnemyState.Walking:
+                animator.Play("Walking");
+                break;
+            case EnemyState.Idle:
+                animator.Play("Idle");
+                break;
+        }
+    }
 
+    private void SetState(EnemyState newState)
+    {
+        if (currentState != newState)
+        {
+            currentState = newState;
+        }
+    }
+
+    private IEnumerator ResetAttackStateAfterAnimation()
+    {
+        yield return new WaitForSeconds(attackAnimationDuration);
+        isAttacking = false;
+    }
 
     private void OnDrawGizmos()
     {
+        Vector3 overlapPos = transform.position;
+        overlapPos.y += 1f;
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(overlapPos, attackRange);
 
         DrawDetectionCylinder(transform.position, detectionRange, maxVerticalDifference);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
     private void DrawDetectionCylinder(Vector3 center, float radius, float height)

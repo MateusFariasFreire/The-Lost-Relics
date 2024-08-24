@@ -221,8 +221,7 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8768928546532381875}
+  m_Children: []
   m_Father: {fileID: 2082550417556733917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3224806017111443849
@@ -1539,7 +1538,8 @@ Transform:
   m_LocalPosition: {x: 8.4187235e-10, y: 0.096125245, z: -0.057499886}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8768928546532381875}
   m_Father: {fileID: 500044073035487417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4498699538457376324
@@ -2589,12 +2589,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9041183842003903658}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.70714897, y: -0.0042859735, z: -0.0038886284, w: 0.7070409}
-  m_LocalPosition: {x: 0.823, y: 1.112, z: 0.021999951}
+  m_LocalRotation: {x: 0.00028076774, y: 0.99998325, z: -0.00007613111, w: 0.005779955}
+  m_LocalPosition: {x: 0.060132712, y: 0.022000622, z: 0.06273919}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9044349756567838205}
+  m_Father: {fileID: 3093599143429746163}
   m_LocalEulerAnglesHint: {x: 90.66199, y: -270.774, z: -270.741}
 --- !u!33 &2053089689598635168
 MeshFilter:
@@ -2752,15 +2752,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a06b496d81be264fae3616cd6a6152b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
-  attackRange: 3
+  currentState: 0
+  moveSpeed: 12
+  gravity: -9.81
+  attackRange: 2
+  cooldown: 0.625
+  attackAnimationDuration: 0.8
+  canAttack: 1
   detectionRange: 20
   maxVerticalDifference: 2
-  rotationSpeed: 5
   environmentLayerMask:
     serializedVersion: 2
     m_Bits: 0
-  gravity: -9.81
 --- !u!95 &-7693598764403906405
 Animator:
   serializedVersion: 5

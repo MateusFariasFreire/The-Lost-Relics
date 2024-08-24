@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _autoDestroy: 0
   _duration: 2
-  _cooldown: 2
+  _cooldown: 0.5
   _height: 1
   _spellPrefab: {fileID: 5032455401692733444, guid: 8251e9d1887eae94095946b18e6ba796,
     type: 3}

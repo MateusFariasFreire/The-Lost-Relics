@@ -29672,10 +29672,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  bumpHeight: 6
-  airDuration: 0.5
-  descendSpeed: 3
-  holdDuration: 0.4
+  bumpHeight: 5
+  liftSpeed: 10
+  descendSpeed: 1
   windEffect: {fileID: 7385175882132628568}
 --- !u!135 &-1408664679953029145
 SphereCollider:

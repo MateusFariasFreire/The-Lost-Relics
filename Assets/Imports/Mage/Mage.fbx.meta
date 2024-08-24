@@ -415,7 +415,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack4
+      name: Attack3
       takeName: Throw
       internalID: -6185155371445809522
       firstFrame: 0
@@ -589,7 +589,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack3
+      name: Attack2
       takeName: 1H_Melee_Attack_Slice_Diagonal
       internalID: 7624655660056751624
       firstFrame: 0
@@ -618,7 +618,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack2
+      name: Attack1
       takeName: 1H_Melee_Attack_Stab
       internalID: 2217827441429648498
       firstFrame: 0
@@ -763,7 +763,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack1
+      name: Attack0
       takeName: 1H_Ranged_Shoot
       internalID: -1964166982296019383
       firstFrame: 0
@@ -792,7 +792,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack5
+      name: Attack4
       takeName: Spellcast_Raise
       internalID: 5352130994113808372
       firstFrame: 0
@@ -804,35 +804,6 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Attack4Casting
-      takeName: Spellcasting
-      internalID: -6008979419217260773
-      firstFrame: 0
-      lastFrame: 20
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

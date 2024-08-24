@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(Animator))]
@@ -16,6 +12,7 @@ public class PlayerAttacks : MonoBehaviour
     [Header("Attacks")]
     [SerializeField] private List<GameObject> attacks;
     [SerializeField] private List<Attack> attacksManagers;
+    [SerializeField] private PlayerSpells playerSpells;
 
 
     private void Start()
@@ -29,24 +26,24 @@ public class PlayerAttacks : MonoBehaviour
         }
     }
 
-    public float CastAttack(int attackType)
+    public float CastAttack(int attackNumber)
     {
-        if (attackType > attacksManagers.Count)
+        if (attackNumber > attacksManagers.Count || !playerSpells.IsSpellUnlocked(attackNumber))
         {
             return -1f;
 
         }
-        return attacksManagers[attackType-1].Cast(staffSpawnPoint.position);
+        return attacksManagers[attackNumber].Cast(staffSpawnPoint.position);
     }
 
-    public void ShowAttackPreview(int attackType)
+    public void ShowAttackPreview(int attackNumber)
     {
-        if (attackType > attacksManagers.Count)
+        if (attackNumber > attacksManagers.Count || !playerSpells.IsSpellUnlocked(attackNumber))
         {
             return;
 
         }
-        attacksManagers[attackType-1].ShowPreview();
+        attacksManagers[attackNumber].ShowPreview();
     }
     
     public void HideAllAttackPatterns()
@@ -57,13 +54,13 @@ public class PlayerAttacks : MonoBehaviour
         }
     }
 
-    private bool IsOnCooldown(int attackType)
+    private bool IsOnCooldown(int attackNumber)
     {
-        if (attackType > attacksManagers.Count)
+        if (attackNumber > attacksManagers.Count)
         {
             return false;
 
         }
-        return attacksManagers[attackType-1].CanCast;
+        return attacksManagers[attackNumber].CanCast;
     }
 }
