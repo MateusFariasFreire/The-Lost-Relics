@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1890308268111939246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RocksMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4672052134311917273}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RockFormation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,6 +156,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock01
       objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -249,6 +254,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -344,6 +354,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock01
       objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -437,6 +452,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -532,6 +552,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock01
       objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -625,6 +650,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -720,6 +750,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock01
       objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -813,6 +848,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -908,6 +948,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock01
       objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1001,6 +1046,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664111488078615008, guid: b1e01bdabb10d7c43bb742d74229086f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
         Running,
         Interacting,
         Dashing,
-        Charging,
         Attacking
     }
 
@@ -52,20 +51,18 @@ public class PlayerController : MonoBehaviour
     private bool isDashing;
     private bool isInteracting;
     private bool isAttacking;
-    private bool isCharging;
     private bool isGrounded;
-    private int currentChargingAttackType;
 
     private float actionEndTime = 0f;
 
     private Animator playerAnimator;
-    private PlayerAttacks playerAttacksManager;
+    private PlayerAttacks playerAttacks;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
         playerAnimator = GetComponent<Animator>();
-        playerAttacksManager = GetComponent<PlayerAttacks>();
+        playerAttacks = GetComponent<PlayerAttacks>();
         mainCamera = Camera.main;
     }
 
@@ -281,9 +278,10 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator HandleAttack(int attackType)
     {
-        float attackDuration = playerAttacksManager.CastAttack(attackType);
-        if (attackDuration > 0f)
+        float attackDuration = playerAttacks.CastAttack(attackType);
+        if (attackDuration > -0.1f)
         {
+            playerAnimator.CrossFade($"Attack{attackType}", 0.1f);
             isAttacking = true;
             SetCurrentState(PlayerState.Attacking);
             yield return new WaitForSeconds(attackDuration);
@@ -443,39 +441,17 @@ public class PlayerController : MonoBehaviour
 
     private void StartCharging(int attackType)
     {
-        if (isAttacking || isDashing || isInteracting || isCharging)
+        if (isAttacking || isDashing || isInteracting)
         {
             return;
         }
 
-        isCharging = true;
-        currentChargingAttackType = attackType;
-        SetCurrentState(PlayerState.Charging);
-
-        // Display the attack pattern based on attack type
-        switch (attackType)
-        {
-            case 2:
-                playerAttacksManager.DisplayAttack2Pattern();
-                break;
-            case 3:
-                playerAttacksManager.DisplayAttack3Pattern();
-                break;
-            case 4:
-                playerAttacksManager.DisplayAttack4Pattern();
-                break;
-        }
+        playerAttacks.ShowAttackPreview(attackType);
     }
 
     private void Attack(int attackType)
     {
-        playerAttacksManager.HideAllAttackPatterns();
-        if (!isCharging || currentChargingAttackType != attackType)
-        {
-            return;
-        }
-
-        isCharging = false;
+        playerAttacks.HideAllAttackPatterns();
         StartCoroutine(HandleAttack(attackType));
     }
 }

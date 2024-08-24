@@ -531,7 +531,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2991131048678500795}
   - component: {fileID: 4619452652300519386}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TreeWithFallingLeaves
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5,7 +5,6 @@ public class BasicAttack : MonoBehaviour
 {
     [SerializeField] private float followZone = 10f;
     [SerializeField] private float speed = 0.1f;
-    [SerializeField] private float lifeTime = 10f;
     [SerializeField] private float lerpSpeed = 5f;
 
     private Transform target = null;
@@ -13,15 +12,6 @@ public class BasicAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lifeTime -= Time.deltaTime;
-
-        if (lifeTime < 0)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-
         if (target != null)
         {
             Vector3 targetDirection = (target.position - transform.position).normalized;
