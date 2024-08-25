@@ -77,6 +77,8 @@ public class MeshTrail : MonoBehaviour
                 Destroy(gObj, meshDestroyDelay);
             }
 
+            Destroy(empty, meshDestroyDelay);
+
             yield return new WaitForSeconds(meshRefreshRate);
         }
 

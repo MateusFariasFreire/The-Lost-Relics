@@ -6,8 +6,9 @@ public class WindTornado : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float bumpHeight = 5f;
     [SerializeField] private float liftSpeed = 2f; 
-
     [SerializeField] private GameObject windEffect;
+
+    private int _damage = 0;
 
     private void Update()
     {
@@ -20,6 +21,7 @@ public class WindTornado : MonoBehaviour
 
         if (character != null)
         {
+            character.SendMessage("TakeDamage", _damage);
             StartCoroutine(Lift(character));
         }
     }
@@ -47,4 +49,8 @@ public class WindTornado : MonoBehaviour
         character.transform.position = targetPosition;
     }
 
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
+    }
 }

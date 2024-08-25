@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &661251490156494673
+--- !u!1 &4564404332120059015
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7231508995941704528}
-  - component: {fileID: 9011004261325254501}
+  - component: {fileID: 6944056767575702581}
+  - component: {fileID: 4392176912671643564}
   m_Layer: 0
   m_Name: Attack3
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7231508995941704528
+--- !u!4 &6944056767575702581
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661251490156494673}
+  m_GameObject: {fileID: 4564404332120059015}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,30 +32,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9011004261325254501
+--- !u!114 &4392176912671643564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661251490156494673}
+  m_GameObject: {fileID: 4564404332120059015}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5f32a8029e01af4aaad87356c1de911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _autoDestroy: 0
-  _duration: 0.5
-  _cooldown: 2
-  _height: 0
-  _spellPrefab: {fileID: 8610179932908058241, guid: 55e5c777f5923b248976eb486297fb8f,
+  _healthAndManaManager: {fileID: 0}
+  _damage: 10
+  _manaCost: 30
+  _duration: 5
+  _cooldown: 10
+  _height: 1
+  _spellPrefab: {fileID: 1830582398703627632, guid: 629a3c942a142454da0ce161365f4846,
     type: 3}
+  _autoDestroy: 0
   _castPosition: 0
   _animationDuration: 1
-  _animationSpellMoment: 0.5
-  _spellPreviewIndicatorPrefab: {fileID: 1176903281990903108, guid: aef7a4ce39e59424abe8e6b6743d91f6,
+  _animationSpellMoment: 0.7
+  _spellPreviewIndicatorPrefab: {fileID: 1392091282180505693, guid: f2c156c406827f54faddcee7127f97b0,
     type: 3}
-  _spellZoneType: 1
+  _spellZoneType: 2
   indicatorActiveMaterial: {fileID: 2100000, guid: d4e18e00a10fae34fa3d88289846db58,
     type: 2}
   indicatorInactiveMaterial: {fileID: 2100000, guid: 643e0a84054e12c4a8018b7bb8b311e9,

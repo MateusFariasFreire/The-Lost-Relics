@@ -21,4 +21,8 @@ public class PlayerStats : ScriptableObject
     [Header("Damage")]
     [SerializeField] private int damagePercent = 100;
     public int DamagePercent { get { return damagePercent; } set { damagePercent = value; } }
+
+    [Header("Dash")]
+    [SerializeField] private bool dashUnlocked = false;
+    public bool DashUnlocked { get { return dashUnlocked; } set { dashUnlocked = value; } }
 }

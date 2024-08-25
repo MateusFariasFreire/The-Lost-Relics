@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6304183086206678496}
   - component: {fileID: -5589892520115267867}
   - component: {fileID: 1671321681754600832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnergyShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4880,7 +4880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 6
-  baseForce: 10
+  baseForce: 22
 --- !u!135 &-5589892520115267867
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4940,7 +4940,7 @@ GameObject:
   - component: {fileID: 4205747761659337663}
   - component: {fileID: 6226070829345194406}
   - component: {fileID: 8469480313719048917}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SubSparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9791,7 +9791,7 @@ GameObject:
   - component: {fileID: 523191751068165586}
   - component: {fileID: 7952985870991820007}
   - component: {fileID: 4753985922730351450}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14691,7 +14691,7 @@ GameObject:
   - component: {fileID: 8764073556630107764}
   - component: {fileID: 6625844691618541096}
   - component: {fileID: 3782867844824815086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19591,7 +19591,7 @@ GameObject:
   - component: {fileID: 5443089942885738828}
   - component: {fileID: 603584425699101434}
   - component: {fileID: 5991106066478334680}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}

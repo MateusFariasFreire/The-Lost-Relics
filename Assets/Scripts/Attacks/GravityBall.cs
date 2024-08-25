@@ -7,11 +7,25 @@ public class GravityBall : MonoBehaviour
     [SerializeField] private float attractionForce = 10f;
     [SerializeField] private float lerpSpeed = 5f;
     [SerializeField] private float groundDistance = 3f;
-    [SerializeField] private float pullDistance = 5f; // Distance à laquelle l'attraction commence
+    [SerializeField] private float pullDistance = 5f;
+    private float applyDamageTimer = 0f;
 
+    private int _damage = 0;
     private void Update()
     {
         FollowMouse();
+
+        applyDamageTimer += Time.deltaTime;
+        if (applyDamageTimer >= 1f)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, pullDistance, LayerMask.GetMask("Enemies"));
+            foreach (Collider collider in colliders)
+            {
+                collider.SendMessage("TakeDamage", _damage);
+            }
+
+            applyDamageTimer = 0f;
+        }
     }
 
     private void FollowMouse()
@@ -36,6 +50,11 @@ public class GravityBall : MonoBehaviour
             // Déplacer le CharacterController directement
             character.Move(pull);
         }
+    }
+
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
     }
 
     private void OnDrawGizmos()

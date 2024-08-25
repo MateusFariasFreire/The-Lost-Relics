@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class BasicAttack : MonoBehaviour
 {
     [SerializeField] private float followZone = 10f;
     [SerializeField] private float speed = 0.1f;
     [SerializeField] private float lerpSpeed = 5f;
+
+    private int _damage = 0;
 
     private Transform target = null;
     private Vector3 initialDirection;
@@ -22,20 +25,16 @@ public class BasicAttack : MonoBehaviour
         if (target != null)
         {
             Vector3 targetDirection = (target.position - transform.position).normalized;
-
-            // On fait le Lerp entre la direction initiale et la direction vers la cible
             Vector3 newDirection = Vector3.Lerp(initialDirection, targetDirection, lerpSpeed * Time.deltaTime);
-
             transform.rotation = Quaternion.LookRotation(newDirection);
+            initialDirection = newDirection;
 
-            if (Vector3.Distance(transform.position, target.position) < 1f)
+            if (Vector3.Distance(transform.position, target.position) < 0.1f)
             {
-                Destroy(target.gameObject);
+                target.SendMessage("TakeDamage", _damage);
+                GetComponent<Collider>().enabled = false;
                 Destroy(gameObject);
             }
-
-            // On met à jour la direction initiale pour la prochaine itération
-            initialDirection = newDirection;
         }
         else
         {
@@ -45,33 +44,36 @@ public class BasicAttack : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
+    }
+
     Transform GetClosestEnemy()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, followZone);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, followZone, LayerMask.GetMask("Enemies"));
         Transform closestEnemy = null;
         float closestDistance = float.MaxValue;
 
-        foreach (var hitCollider in hitColliders)
+        foreach (Collider collider in hitColliders)
         {
-            if (hitCollider.CompareTag("Enemy"))
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+            RaycastHit hit;
+            Vector3 directionToEnemy = (collider.transform.position - transform.position).normalized;
+
+            if (Physics.Raycast(transform.position, directionToEnemy, out hit, followZone, LayerMask.GetMask("Environment")))
             {
-                Vector3 directionToEnemy = hitCollider.transform.position - transform.position;
-                float distanceToEnemy = directionToEnemy.magnitude;
-
-                Ray ray = new Ray(transform.position, directionToEnemy.normalized);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, distanceToEnemy))
+                if (hit.distance < distance)
                 {
-                    if (hit.collider.transform == hitCollider.transform)
-                    {
-                        if (distanceToEnemy < closestDistance)
-                        {
-                            closestDistance = distanceToEnemy;
-                            closestEnemy = hitCollider.transform;
-                        }
-                    }
+                    continue;
                 }
+            }
+
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemy = collider.transform;
             }
         }
 
@@ -82,13 +84,10 @@ public class BasicAttack : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+            other.SendMessage("TakeDamage", _damage);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Destroy(gameObject);
     }
 
     // Dessine le gizmo de la zone de suivi

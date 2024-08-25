@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,11 @@ public class DemonBall : MonoBehaviour
     [SerializeField] private float climbDuration = 1f;
     [SerializeField] private float descentAcceleration = 2f;
     [SerializeField] private GameObject hitEffect;
-
     [SerializeField] private float impactRadius = 5f;
+
+    private float postExplosionTimer = 0f;
+
+    private int _damage = 0;
 
     private Rigidbody rb;
     private bool isDescending = false;
@@ -27,13 +31,17 @@ public class DemonBall : MonoBehaviour
     {
         if (burnEnemiesActive)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, impactRadius);
-            foreach (Collider collider in colliders)
+            postExplosionTimer += Time.deltaTime;
+
+            if (postExplosionTimer >= 0.5)
             {
-                if (collider.CompareTag("Enemy"))
+                Collider[] colliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemies"));
+                foreach (Collider collider in colliders)
                 {
-                    Destroy(collider.gameObject);
+                    collider.SendMessage("TakeDamage", _damage / 10);
                 }
+
+                postExplosionTimer = 0f;
             }
         }
     }
@@ -53,18 +61,34 @@ public class DemonBall : MonoBehaviour
         }
     }
 
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject hitEffectGO = Instantiate(hitEffect, transform.position, Quaternion.identity);
+        Debug.Log("Hit something");
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemies"));
+        foreach (Collider collider in colliders)
+        {
+            collider.SendMessage("TakeDamage", _damage);
+        }
 
         burnEnemiesActive = true;
 
+        GameObject hitEffectGO = Instantiate(hitEffect, transform.position, Quaternion.identity);
+
+        GetComponent<SphereCollider>().enabled = false;
         GetComponent<MeshRenderer>().enabled = false;
         rb.isKinematic = true;
 
         Destroy(hitEffectGO, 1.40f);
         Destroy(gameObject, 1.40f);
+
+
+        Debug.Log("TriggerExit");
     }
 
     private void OnDrawGizmos()

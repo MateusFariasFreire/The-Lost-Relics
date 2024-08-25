@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerSpells : ScriptableObject
 {
     [Header("Unlocked Spells")]
-    [SerializeField] private bool[] unlockedSpells = new bool[6];
+    [SerializeField] private bool[] unlockedSpells = new bool[5];
 
     public bool IsSpellUnlocked(int spellIndex)
     {

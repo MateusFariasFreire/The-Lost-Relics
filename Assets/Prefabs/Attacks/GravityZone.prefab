@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3316853187146291387}
   - component: {fileID: 5867580634429140063}
   - component: {fileID: 2431781944596285571}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GravityZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9640e89673a11074c89bd2eb90a690d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attractionForce: 5
+  attractionForce: 7
   lerpSpeed: 2
   groundDistance: 2
   pullDistance: 9.2
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 8307422281932130796}
   - component: {fileID: 281140939477824542}
   - component: {fileID: 6464013138212069056}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4953,7 +4953,7 @@ GameObject:
   - component: {fileID: 1084119905710267428}
   - component: {fileID: 5030348341334426744}
   - component: {fileID: 5684861494851592684}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SparksThin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9795,7 +9795,7 @@ GameObject:
   - component: {fileID: 633601008795250565}
   - component: {fileID: 3191036474210993914}
   - component: {fileID: 7400713801309662057}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14637,7 +14637,7 @@ GameObject:
   - component: {fileID: 5757994925888925072}
   - component: {fileID: 2911795600547579979}
   - component: {fileID: 6215941169706230330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14719,7 +14719,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5064708744539588486}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Purple Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14755,7 +14755,7 @@ GameObject:
   - component: {fileID: 4249878056566401383}
   - component: {fileID: 2027773469375161606}
   - component: {fileID: 7010226064688503593}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14838,7 +14838,7 @@ GameObject:
   - component: {fileID: 6873666300888619971}
   - component: {fileID: 7704336114488369186}
   - component: {fileID: 578802150530189244}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14919,7 +14919,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1876534405477897859}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plasma Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14956,7 +14956,7 @@ GameObject:
   - component: {fileID: 337592564865862978}
   - component: {fileID: 8468556925675371933}
   - component: {fileID: 3254364428776805710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,10 +11,43 @@ public class HealthAndManaManager : MonoBehaviour
     [SerializeField] private UIBarController healthBarController;
     [SerializeField] private UIBarController manaBarController;
 
+    [SerializeField] private int healthRegenPerSecond = 1;
+    [SerializeField] private int manaRegenPerSecond = 1;
+
+    private float healthRegenTimer = 0f;
+    private float manaRegenTimer = 0f;
+
     private void Start()
     {
         UpdateHealthBar();
         UpdateManaBar();
+    }
+    
+    private void Update()
+    {
+        healthRegenTimer += Time.deltaTime;
+        manaRegenTimer += Time.deltaTime;
+        
+        if (healthRegenTimer > 1f) {
+            if (playerStats.HP < playerStats.HPMax)
+            {
+                playerStats.HP = Mathf.Clamp(playerStats.HP + healthRegenPerSecond, 0, playerStats.HPMax);
+                healthRegenTimer = 0f;
+                UpdateHealthBar();
+            }
+        }
+
+        if (manaRegenTimer > 1f)
+        {
+            if (playerStats.Mana < playerStats.ManaMax)
+            {
+                playerStats.Mana = Mathf.Clamp(playerStats.Mana + manaRegenPerSecond, 0, playerStats.ManaMax);
+                manaRegenTimer = 0f;
+                UpdateManaBar();
+            }
+        }
+        
+
     }
 
     public bool TakeDamage(int damage)
@@ -97,5 +130,10 @@ public class HealthAndManaManager : MonoBehaviour
 
         UpdateHealthBar();
         UpdateManaBar();
+    }
+
+    public bool CanUseSpell(int manaCost)
+    {
+        return playerStats.Mana >= manaCost;
     }
 }

@@ -12,12 +12,17 @@ public class Attack : MonoBehaviour
     public bool CanCast { get { return _canCast; } }
     private bool _canCast = true;
 
+    [Header("General")]
+    [SerializeField] HealthAndManaManager _healthAndManaManager = null;
+
     [Header("Info")]
-    [SerializeField] private bool _autoDestroy = false;
+    [SerializeField] private int _damage = 10;
+    [SerializeField] private int _manaCost = 10;
     [SerializeField] private float _duration = 1f;
     [SerializeField] private float _cooldown = 2f;
     [SerializeField] private float _height = 1f;
     [SerializeField] private GameObject _spellPrefab;
+    [SerializeField] private bool _autoDestroy = false;
     [SerializeField] private SpellCastPosition _castPosition = SpellCastPosition.Player;
 
     [Header("Animation")]
@@ -31,9 +36,14 @@ public class Attack : MonoBehaviour
     [SerializeField] private Material indicatorActiveMaterial;
     [SerializeField] private Material indicatorInactiveMaterial;
 
+    private void Start()
+    {
+        _healthAndManaManager = GetComponentInParent<HealthAndManaManager>();
+    }
+
     public float Cast(Vector3 castLocation)
     {
-        if (CanCast)
+        if (CanCast && _healthAndManaManager.CanUseSpell(_manaCost))
         {
             StartCoroutine(PerformSpell(castLocation));
             return _animationDuration;
@@ -104,19 +114,21 @@ public class Attack : MonoBehaviour
         }
         castLocation.y += _height;
 
+
         if (_animationSpellMoment == _animationDuration)
         {
             yield return new WaitForSeconds(_animationDuration);
-
             spellPrefab = Instantiate(_spellPrefab, castLocation, transform.rotation);
+            spellPrefab.SendMessage("SetDamage", _damage);
+            _healthAndManaManager.UseMana(_manaCost);
 
         }
         else
         {
             yield return new WaitForSeconds(_animationSpellMoment);
-
             spellPrefab = Instantiate(_spellPrefab, castLocation, transform.rotation);
-
+            spellPrefab.SendMessage("SetDamage", _damage);
+            _healthAndManaManager.UseMana(_manaCost);
             yield return new WaitForSeconds(_animationDuration - _animationSpellMoment);
         }
 
@@ -134,7 +146,7 @@ public class Attack : MonoBehaviour
 
     private void UpdateMaterial()
     {
-        if (_canCast)
+        if (_canCast && _healthAndManaManager.CanUseSpell(_manaCost))
         {
             _spellPreviewIndicator.GetComponent<Canvas>().transform.Find("Image").GetComponent<Image>().material = indicatorActiveMaterial;
         }

@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.5f;
     [SerializeField] private float interactionDuration = 2f;
+    [SerializeField] private float roationSpeed = 10f;
 
     [Header("Dash Effect")]
     [SerializeField] private MeshTrail dashMeshTrail;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private PlayerState oldState = PlayerState.Idle;
     private MovementDirection currentDirection = MovementDirection.None;
     private MovementDirection relativeMovementDirection = MovementDirection.None;
+    [SerializeField] private PlayerStats playerStats;
 
     private Vector2 inputDirection;
     private bool isRunning;
@@ -134,7 +136,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed)
+        if (value.phase == InputActionPhase.Performed && playerStats.DashUnlocked)
         {
             if (!isInteracting && !isAttacking && !isDashing)
             {
@@ -283,7 +285,6 @@ public class PlayerController : MonoBehaviour
             float attackDuration = playerAttacks.CastAttack(attackNumber);
             if (attackDuration > -0.1f)
             {
-                Debug.Log(attackDuration);
                 playerAnimator.CrossFade($"Attack{attackNumber}", 0.1f);
                 isAttacking = true;
                 SetCurrentState(PlayerState.Attacking);
@@ -434,7 +435,7 @@ public class PlayerController : MonoBehaviour
         Vector3 directionToMouse = (MouseIndicator.GetMouseWorldPosition() - transform.position).normalized;
         directionToMouse.y = 0; // Ignorer la composante Y pour la rotation horizontale
         Quaternion targetRotation = Quaternion.LookRotation(directionToMouse);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * roationSpeed);
     }
 
     private void SetCurrentState(PlayerState newState)

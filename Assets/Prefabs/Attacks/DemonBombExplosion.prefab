@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2815792969365633966}
   - component: {fileID: 8929511187682246889}
   - component: {fileID: 7899880172008643832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: mesh_circle_inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5103,7 +5103,7 @@ GameObject:
   - component: {fileID: 6403074497878802539}
   - component: {fileID: 4930060279837194042}
   - component: {fileID: 1063154189866496561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: center_smoke_inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10137,7 +10137,7 @@ GameObject:
   - component: {fileID: 1719028415269311276}
   - component: {fileID: 333807438914594747}
   - component: {fileID: 1535596820148424666}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: mesh_circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15055,7 +15055,7 @@ GameObject:
   - component: {fileID: 7705543545777784845}
   - component: {fileID: 2857880158352944467}
   - component: {fileID: 6305687997925459150}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DemonBombExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19962,7 +19962,7 @@ GameObject:
   - component: {fileID: 5183574097077431868}
   - component: {fileID: 4946294773283353514}
   - component: {fileID: 8841591172838024119}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: energy_out
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24871,7 +24871,7 @@ GameObject:
   - component: {fileID: 5974175815573805007}
   - component: {fileID: 6180090664458545058}
   - component: {fileID: 2951629841536126605}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29771,7 +29771,7 @@ GameObject:
   - component: {fileID: 1404913299451455536}
   - component: {fileID: 8916399307122893645}
   - component: {fileID: 2992312873440423580}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: smoke_sub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34680,7 +34680,7 @@ GameObject:
   - component: {fileID: 5406317018175703541}
   - component: {fileID: 2945858258074837722}
   - component: {fileID: 2630677171658908471}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
