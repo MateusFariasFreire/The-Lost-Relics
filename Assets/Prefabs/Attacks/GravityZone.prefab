@@ -49,7 +49,7 @@ SphereCollider:
     m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 1983
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9640e89673a11074c89bd2eb90a690d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attractionForce: 7
+  attractionForce: 10
   lerpSpeed: 2
   groundDistance: 2
   pullDistance: 9.2

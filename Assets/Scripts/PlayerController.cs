@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float runSpeed = 10f;
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.5f;
+    [SerializeField] private int dashCost = 10;
     [SerializeField] private float interactionDuration = 2f;
     [SerializeField] private float roationSpeed = 10f;
 
@@ -47,6 +48,8 @@ public class PlayerController : MonoBehaviour
     private MovementDirection currentDirection = MovementDirection.None;
     private MovementDirection relativeMovementDirection = MovementDirection.None;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerSpells playerSpells;
+    [SerializeField] private HealthAndManaManager healthAndManaManager;
 
     private Vector2 inputDirection;
     private bool isRunning;
@@ -136,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext value)
     {
-        if (value.phase == InputActionPhase.Performed && playerStats.DashUnlocked)
+        if (value.phase == InputActionPhase.Performed && playerSpells.DashEnabled && healthAndManaManager.CanUseSpell(dashCost))
         {
             if (!isInteracting && !isAttacking && !isDashing)
             {
@@ -258,6 +261,8 @@ public class PlayerController : MonoBehaviour
 
         isDashing = false;
         actionEndTime = Time.time + dashDuration; // Bloquer les autres actions pendant la durée du dash
+
+        healthAndManaManager.UseMana(dashCost);
     }
 
     private IEnumerator HandleInteraction()
@@ -274,6 +279,8 @@ public class PlayerController : MonoBehaviour
 
         // Attendez la durée de l'interaction
         yield return new WaitForSeconds(interactionDuration);
+
+        this.SendMessage("Interact");
 
         isInteracting = false;
     }

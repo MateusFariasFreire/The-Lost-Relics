@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f47efe3ad31bc4995caec9e8605d6e, type: 3}
   m_Name: so_PlayerUnlockedSpells
   m_EditorClassIdentifier: 
-  unlockedSpells: 0101010101
+  unlockedSpells: 0000000000
+  enabledSpells: 0000000000
+  dashEnabled: 1
+  scenarioManager: {fileID: 11400000, guid: a1f09a5fcd2bd0a40b36215dbe6bc509, type: 2}

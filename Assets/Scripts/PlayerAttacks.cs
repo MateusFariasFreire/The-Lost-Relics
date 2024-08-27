@@ -28,7 +28,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public float CastAttack(int attackNumber)
     {
-        if (attackNumber > attacksManagers.Count || !playerSpells.IsSpellUnlocked(attackNumber))
+        if (attackNumber > attacksManagers.Count || !playerSpells.CanUseSpell(attackNumber))
         {
             return -1f;
 
@@ -38,7 +38,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public void ShowAttackPreview(int attackNumber)
     {
-        if (attackNumber > attacksManagers.Count || !playerSpells.IsSpellUnlocked(attackNumber))
+        if (attackNumber > attacksManagers.Count || !playerSpells.CanUseSpell(attackNumber))
         {
             return;
 
