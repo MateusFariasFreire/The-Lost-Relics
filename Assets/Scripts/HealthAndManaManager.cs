@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static PlayerController;
 
 public class HealthAndManaManager : MonoBehaviour
@@ -56,9 +57,12 @@ public class HealthAndManaManager : MonoBehaviour
         playerStats.HP -= damage;
         if (playerStats.HP <= 0)
         {
-            playerStats.HP = 0;
-            Debug.Log("Player is dead");
-            isDead = true;
+
+            playerStats.HP = playerStats.HPMax;
+            playerStats.Mana = playerStats.ManaMax;
+
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         }
 
         UpdateHealthBar();

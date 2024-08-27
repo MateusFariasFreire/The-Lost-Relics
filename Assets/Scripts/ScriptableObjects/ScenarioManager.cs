@@ -28,6 +28,19 @@ public class ScenarioManager : ScriptableObject
     public void OnStaffFound()
     {
         hasFoundStaff = true;
+        UnlockSpell(0);
+        UnlockSpell(1);
+        UnlockSpell(2);
+        UnlockSpell(3);
+        UnlockSpell(4);
+        UnlockSpell(5);
+
+        EnableSpell(0);
+        EnableSpell(1);
+        EnableSpell(2);
+        EnableSpell(3);
+        EnableSpell(4);
+        EnableSpell(5);
     }
 
     private void EnableDash()

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unlockedSpells: 0000000000
   enabledSpells: 0000000000
-  dashEnabled: 1
+  dashEnabled: 0
   scenarioManager: {fileID: 11400000, guid: a1f09a5fcd2bd0a40b36215dbe6bc509, type: 2}

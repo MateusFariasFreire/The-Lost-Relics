@@ -56,7 +56,7 @@ MonoBehaviour:
   _castPosition: 0
   _animationDuration: 1
   _animationSpellMoment: 0.7
-  _spellPreviewIndicatorPrefab: {fileID: 1392091282180505693, guid: f2c156c406827f54faddcee7127f97b0,
+  _spellPreviewIndicatorPrefab: {fileID: 1392091282180505693, guid: aef7a4ce39e59424abe8e6b6743d91f6,
     type: 3}
   _spellZoneType: 2
   indicatorActiveMaterial: {fileID: 2100000, guid: d4e18e00a10fae34fa3d88289846db58,

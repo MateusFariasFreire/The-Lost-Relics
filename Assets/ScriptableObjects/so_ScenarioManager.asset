@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37b418f73d7ff5458e6987666d97da2, type: 3}
   m_Name: so_ScenarioManager
   m_EditorClassIdentifier: 
-  hasFoundBook: 1
-  hasFoundWand: 1
+  hasFoundBook: 0
+  hasFoundWand: 0
   hasFoundStaff: 0
   hasDefeatedBoss: 0
   playerSpells: {fileID: 11400000, guid: 8a669e6758e9e9246a8ed61d4a9504b4, type: 2}

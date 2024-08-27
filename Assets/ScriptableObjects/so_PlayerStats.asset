@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b594330955ac424881c1c6cfaba5409, type: 3}
   m_Name: so_PlayerStats
   m_EditorClassIdentifier: 
-  hp: 130
+  hp: 300
   hpMax: 300
   mana: 100
   manaMax: 100
   damagePercent: 100
-  dashUnlocked: 1
